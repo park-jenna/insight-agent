@@ -73,6 +73,15 @@ async def upload_pdf(file: UploadFile = File(...)):
         async with conn.transaction():
             user_id = await get_or_create_dev_user(conn)
 
+            # replace-on-reupload: if this filename was uploaded before,
+            # remove the old document first so we don't stack duplicates.
+            # ON DELETE CASCADE clears its chunks too.
+            await conn.execute(
+                "DELETE FROM documents WHERE user_id = $1 AND filename = $2",
+                user_id,
+                file.filename,
+            )
+
             doc = await conn.fetchrow(
                 """
                 INSERT INTO documents (user_id, filename, total_chunks)
