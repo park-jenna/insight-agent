@@ -4,9 +4,9 @@ Document ingestion routes (PDF).
 Mirrors the CSV flow but for unstructured data: accept a PDF, extract
 text page by page, chunk it, and store the document plus its chunks.
 
-Embeddings are intentionally left NULL here. This step proves the
-extract-and-chunk pipeline end to end without needing an API key. The
-next step backfills embeddings into these same rows.
+Embeddings are intentionally left NULL here. Extraction and chunking
+run without needing an API key; embeddings are backfilled into these
+same rows by backfill_embeddings.py.
 """
 
 import os
@@ -74,7 +74,7 @@ async def upload_pdf(file: UploadFile = File(...)):
             user_id = await get_or_create_dev_user(conn)
 
             # replace-on-reupload: if this filename was uploaded before,
-            # remove the old document first so we don't stack duplicates.
+            # remove the old document first so duplicates don't stack.
             # ON DELETE CASCADE clears its chunks too.
             await conn.execute(
                 "DELETE FROM documents WHERE user_id = $1 AND filename = $2",
@@ -94,7 +94,7 @@ async def upload_pdf(file: UploadFile = File(...)):
             )
             document_id = doc["id"]
 
-            # embedding column stays NULL for now, filled in the next step
+            # embedding stays NULL here, backfilled separately
             records = [
                 (document_id, idx, chunk_text_value)
                 for idx, chunk_text_value in enumerate(chunks)
@@ -113,7 +113,7 @@ async def upload_pdf(file: UploadFile = File(...)):
         "pages": len(pages),
         "total_chunks": len(chunks),
         "characters": len(full_text),
-        "note": "Chunks stored. Embeddings not generated yet (next step).",
+        "note": "Chunks stored. Run backfill_embeddings.py to embed them.",
     }
 
 

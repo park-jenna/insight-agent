@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import init_pool, close_pool
-from app.routers import datasets, documents, search
+from app.routers import datasets, documents, search, agent
 
 app = FastAPI(title="InsightAgent API")
 
@@ -24,6 +24,7 @@ app.add_middleware(
 app.include_router(datasets.router)
 app.include_router(documents.router)
 app.include_router(search.router)
+app.include_router(agent.router)
 
 
 @app.on_event("startup")

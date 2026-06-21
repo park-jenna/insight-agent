@@ -12,8 +12,8 @@ Two jobs, kept separate on purpose:
    embedding. Overlap matters so a sentence split across a boundary
    still shows up whole in at least one chunk.
 
-Neither step needs the database or an API key, so we can test both in
-isolation before wiring up embeddings.
+Neither step needs the database or an API key, so both can be tested in
+isolation before embeddings are wired up.
 """
 
 import pdfplumber
@@ -49,9 +49,9 @@ def chunk_text(
     The overlap means consecutive chunks share their boundary region,
     so a fact sitting on a chunk edge isn't lost.
 
-    We try to break on paragraph or sentence boundaries near the target
-    size instead of slicing mid word, which keeps chunks readable and
-    improves retrieval quality.
+    Breaks on paragraph or sentence boundaries near the target size
+    instead of slicing mid word, which keeps chunks readable and improves
+    retrieval quality.
     """
     if not text:
         return []

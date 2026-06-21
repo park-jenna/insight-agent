@@ -73,8 +73,8 @@ async def hybrid_search(conn, query: str, top_k: int = 5) -> list[dict]:
     """Embed the query, run vector + keyword search, fuse with RRF.
 
     Returns the top_k chunks, each with the rank it earned in each list
-    (None if it didn't appear there) and its fused score, so you can see
-    WHY a chunk surfaced.
+    (None if it didn't appear there) and its fused score, which shows why
+    a chunk surfaced.
     """
     query_vec = embed_query(query)
     literal = to_vector_literal(query_vec)

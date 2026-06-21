@@ -1,18 +1,15 @@
 """
-Dataset ingestion routes.
+Dataset ingestion routes (CSV).
 
-Handles CSV upload: parse with Pandas, infer column types so the
-platform stays domain agnostic, store metadata in `datasets` and
-every row in `dataset_rows`.
+Accept a CSV upload, parse it with Pandas, infer column types so the
+platform stays domain agnostic, and store the metadata plus every row.
 
-There's no real auth yet (intentionally, per the project brief), so
-every upload is attached to a single dev user that gets created on
-first use.
+No auth yet by design. Every upload attaches to a single dev user
+created on first use.
 """
 
 import io
 import json
-import math
 from datetime import datetime, date
 
 import pandas as pd
@@ -24,13 +21,28 @@ router = APIRouter(prefix="/datasets", tags=["datasets"])
 
 DEV_USER_EMAIL = "dev@insightagent.local"
 
+# Swagger's "Try it out" pre-fills optional string fields with this, so
+# treat it as "no name given" rather than a real dataset name.
+PLACEHOLDER_NAMES = {"", "string", None}
+
+
+def clean_name(name: str | None, filename: str) -> str:
+    """Pick a usable dataset name.
+
+    Falls back to the filename stem when the caller passes nothing or the
+    Swagger placeholder, so datasets never end up named 'string'.
+    """
+    if name not in PLACEHOLDER_NAMES:
+        return name.strip()
+    return filename.rsplit(".", 1)[0]
+
 
 def infer_column_types(df: pd.DataFrame) -> dict:
-    """Map pandas dtypes to simple, domain agnostic type labels.
+    """Map pandas dtypes to simple type labels.
 
-    Note: pandas infers types purely from the CSV's own content. A
-    column like "2026-01-29" reads as a string unless we explicitly
-    tell pandas to parse it as a date. That's expected, not a bug.
+    Pandas infers types from the CSV content alone. A column like
+    "2026-01-29" reads as a string unless explicitly parsed as a date,
+    which is expected rather than a bug.
     """
     type_map = {}
     for col in df.columns:
@@ -51,9 +63,8 @@ def infer_column_types(df: pd.DataFrame) -> dict:
 def json_safe(value):
     """Convert one pandas/numpy cell value into something JSON can encode.
 
-    Handles three problem cases: NaN (pandas missing value marker),
-    numpy scalar types (int64 etc, which json.dumps rejects), and
-    timestamps (need isoformat strings, not pandas objects).
+    Handles NaN (pandas missing marker), numpy scalars (int64 etc, which
+    json.dumps rejects), and timestamps (need isoformat strings).
     """
     if value is None:
         return None
@@ -61,10 +72,10 @@ def json_safe(value):
         if pd.isna(value):
             return None
     except (TypeError, ValueError):
-        pass  # value wasn't NaN-checkable, fall through
+        pass
     if isinstance(value, (pd.Timestamp, datetime, date)):
         return value.isoformat()
-    if hasattr(value, "item"):  # numpy scalar: int64, float64, bool_
+    if hasattr(value, "item"):
         return value.item()
     return value
 
@@ -96,12 +107,21 @@ async def upload_csv(file: UploadFile = File(...), name: str = Form(None)):
         raise HTTPException(400, "CSV has no rows.")
 
     column_schema = infer_column_types(df)
-    dataset_name = name or file.filename.rsplit(".", 1)[0]
+    dataset_name = clean_name(name, file.filename)
 
     pool = get_pool()
     async with pool.acquire() as conn:
         async with conn.transaction():
             user_id = await get_or_create_dev_user(conn)
+
+            # Replace on re-upload: drop any existing dataset with this
+            # name so repeated uploads don't stack duplicates. Cascade
+            # clears its rows.
+            await conn.execute(
+                "DELETE FROM datasets WHERE user_id = $1 AND name = $2",
+                user_id,
+                dataset_name,
+            )
 
             dataset_row = await conn.fetchrow(
                 """

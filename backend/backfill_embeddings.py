@@ -2,9 +2,9 @@
 Backfill embeddings for chunks that don't have them yet.
 
 Finds every document_chunks row where embedding IS NULL, embeds the
-content in batches, and writes the vectors back. Safe to run repeatedly,
-it only touches rows still missing an embedding, so if it dies partway
-you just run it again to finish.
+content in batches, and writes the vectors back. Safe to run repeatedly:
+it only touches rows still missing an embedding, so a partial run can be
+resumed by running it again.
 
 Vectors are sent as text literals and cast with ::vector in SQL. That
 avoids depending on which schema the pgvector extension lives in
