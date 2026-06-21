@@ -1,0 +1,301 @@
+student_id,name,program,enrollment_date,school,grade_level,sessions_attended,status,advocate_assigned
+ST0001,Yuki Martinez,ELEVATE,2026-01-29,Amundsen HS,10,14,active,T. Mendez
+ST0002,Rosa Ali,ELEVATE,2025-08-27,Mather HS,9,1,active,L. Brooks
+ST0003,Esperanza Washington,ELEVATE,2025-07-28,Senn HS,12,14,active,M. Castillo
+ST0004,Omar Garcia,ELEVATE,2025-12-15,Mather HS,11,17,active,J. Adeyemi
+ST0005,Diego Nguyen,IMPACT,2024-04-09,Sullivan HS,11,38,active,R. Okafor
+ST0006,Linh Reyes,ELEVATE,2025-01-22,Roosevelt HS,11,40,completed,J. Adeyemi
+ST0007,Ana Brown,ELEVATE,2024-02-16,Senn HS,11,5,inactive,T. Mendez
+ST0008,Lucia Hernandez,IMPACT,2025-10-12,Sullivan HS,10,23,active,M. Castillo
+ST0009,Isaiah Nguyen,ELEVATE,2025-06-30,Senn HS,10,29,active,L. Brooks
+ST0010,Rosa Rodriguez,ELEVATE,2024-08-22,Lincoln Park HS,11,25,active,L. Brooks
+ST0011,Hassan Flores,IMPACT,2024-08-05,Lake View HS,12,29,active,S. Chen
+ST0012,Tyrone Ali,IMPACT,2026-02-03,Curie Metro HS,12,37,active,L. Brooks
+ST0013,Fatima Vargas,IMPACT,2024-04-03,Lincoln Park HS,9,9,completed,K. Park
+ST0014,Malik Nguyen,IMPACT,2025-01-25,Curie Metro HS,12,33,active,R. Okafor
+ST0015,Rosa Martinez,IMPACT,2026-02-26,Sullivan HS,9,18,active,D. Ramirez
+ST0016,Maria Hernandez,ELEVATE,2025-06-03,Roosevelt HS,11,40,active,L. Brooks
+ST0017,Fatima Kim,ELEVATE,2025-07-06,Kelly College Prep,9,38,active,R. Okafor
+ST0018,Diego Kim,IMPACT,2024-09-02,Lincoln Park HS,10,36,inactive,T. Mendez
+ST0019,Linh Thompson,ELEVATE,2026-02-17,Kelly College Prep,10,8,completed,S. Chen
+ST0020,Mei Vargas,IMPACT,2024-08-04,Kelly College Prep,10,19,active,J. Adeyemi
+ST0021,Priya Vargas,IMPACT,2024-05-03,Senn HS,10,4,active,L. Brooks
+ST0022,Ana Patel,ELEVATE,2024-03-13,Lincoln Park HS,10,4,inactive,J. Adeyemi
+ST0023,Aaliyah Vargas,ELEVATE,2024-10-12,Lake View HS,10,34,active,D. Ramirez
+ST0024,Tyrone Thompson,IMPACT,2024-07-13,Roosevelt HS,9,27,active,K. Park
+ST0025,Priya Johnson,ELEVATE,2024-03-03,Mather HS,11,6,active,L. Brooks
+ST0026,Andre Reyes,ELEVATE,2025-03-08,Wells Community Academy,11,29,active,T. Mendez
+ST0027,Priya Ali,ELEVATE,2024-02-21,Kelly College Prep,9,5,inactive,L. Brooks
+ST0028,Marcus Jackson,IMPACT,2025-05-07,Senn HS,12,3,active,R. Okafor
+ST0029,Lucia Hernandez,IMPACT,2024-10-19,Mather HS,12,9,active,L. Brooks
+ST0030,Jose Flores,ELEVATE,2026-02-04,Sullivan HS,9,3,active,S. Chen
+ST0031,Jose Vargas,ELEVATE,2024-07-09,Roosevelt HS,9,15,active,L. Brooks
+ST0032,Ana Washington,ELEVATE,2025-09-26,Roosevelt HS,12,37,active,J. Adeyemi
+ST0033,Hassan Hernandez,ELEVATE,2025-11-16,Sullivan HS,10,16,active,M. Castillo
+ST0034,Priya Rodriguez,ELEVATE,2024-01-10,Lake View HS,9,4,active,M. Castillo
+ST0035,Fatima Kim,ELEVATE,2024-09-07,Sullivan HS,11,10,active,M. Castillo
+ST0036,Malik Vargas,ELEVATE,2025-11-14,Kelly College Prep,11,6,inactive,S. Chen
+ST0037,Mei Martinez,ELEVATE,2026-01-30,Kelly College Prep,10,17,active,L. Brooks
+ST0038,Isaiah Rodriguez,ELEVATE,2025-12-04,Amundsen HS,12,16,inactive,R. Okafor
+ST0039,Aaliyah Jackson,IMPACT,2024-02-15,Lincoln Park HS,11,8,completed,M. Castillo
+ST0040,Marcus Reyes,IMPACT,2025-07-28,Lincoln Park HS,9,4,inactive,S. Chen
+ST0041,Andre Johnson,IMPACT,2025-08-19,Kelly College Prep,10,27,active,M. Castillo
+ST0042,David Johnson,IMPACT,2024-08-03,Senn HS,9,22,completed,K. Park
+ST0043,Malik Williams,ELEVATE,2024-06-15,Wells Community Academy,12,1,active,J. Adeyemi
+ST0044,Omar Jackson,ELEVATE,2024-09-30,Wells Community Academy,9,24,inactive,D. Ramirez
+ST0045,Tyrone Brown,IMPACT,2024-12-24,Amundsen HS,10,14,active,L. Brooks
+ST0046,Lucia Rodriguez,IMPACT,2024-03-12,Amundsen HS,11,32,active,J. Adeyemi
+ST0047,Maria Martinez,IMPACT,2024-07-01,Curie Metro HS,11,2,active,K. Park
+ST0048,David Rodriguez,IMPACT,2025-09-12,Kelly College Prep,9,24,inactive,L. Brooks
+ST0049,Mei Johnson,IMPACT,2024-01-02,Kelly College Prep,10,23,active,J. Adeyemi
+ST0050,Malik Rodriguez,ELEVATE,2026-01-07,Amundsen HS,11,26,active,M. Castillo
+ST0051,Andre Williams,ELEVATE,2025-03-06,Mather HS,10,39,active,K. Park
+ST0052,Andre Garcia,IMPACT,2024-10-20,Senn HS,12,37,completed,J. Adeyemi
+ST0053,Priya Reyes,IMPACT,2025-11-22,Senn HS,12,10,completed,M. Castillo
+ST0054,Esperanza Washington,IMPACT,2024-04-05,Senn HS,11,14,completed,S. Chen
+ST0055,Maria Johnson,ELEVATE,2025-05-01,Curie Metro HS,9,29,active,L. Brooks
+ST0056,Isaiah Gonzalez,IMPACT,2025-02-13,Senn HS,10,0,inactive,T. Mendez
+ST0057,Daniela Jackson,ELEVATE,2024-06-29,Kelly College Prep,12,3,active,T. Mendez
+ST0058,Priya Williams,IMPACT,2025-11-14,Kelly College Prep,11,28,completed,K. Park
+ST0059,Keisha Ali,IMPACT,2024-06-11,Lake View HS,12,16,completed,M. Castillo
+ST0060,Daniela Vargas,IMPACT,2025-10-03,Senn HS,11,28,active,M. Castillo
+ST0061,Tyrone Hernandez,IMPACT,2024-11-23,Kelly College Prep,9,8,active,K. Park
+ST0062,Isaiah Williams,ELEVATE,2024-03-06,Mather HS,12,21,active,K. Park
+ST0063,Jose Brown,IMPACT,2025-02-02,Curie Metro HS,9,36,active,R. Okafor
+ST0064,David Davis,IMPACT,2025-03-05,Kelly College Prep,10,31,active,K. Park
+ST0065,Kevin Garcia,IMPACT,2024-12-10,Mather HS,10,29,inactive,R. Okafor
+ST0066,Hassan Gonzalez,ELEVATE,2024-03-26,Mather HS,10,29,active,M. Castillo
+ST0067,Lucia Rodriguez,ELEVATE,2025-04-10,Sullivan HS,11,24,active,K. Park
+ST0068,Mei Nguyen,IMPACT,2024-01-20,Kelly College Prep,9,22,active,T. Mendez
+ST0069,Daniela Johnson,ELEVATE,2024-09-10,Senn HS,9,39,active,S. Chen
+ST0070,Kevin Martinez,ELEVATE,2025-04-21,Amundsen HS,11,10,completed,T. Mendez
+ST0071,Daniela Lopez,IMPACT,2024-04-20,Curie Metro HS,9,19,active,K. Park
+ST0072,Lucia Brown,ELEVATE,2025-08-29,Senn HS,9,19,inactive,T. Mendez
+ST0073,Omar Flores,ELEVATE,2024-12-21,Kelly College Prep,12,23,active,J. Adeyemi
+ST0074,Maria Jackson,IMPACT,2024-04-18,Mather HS,11,40,inactive,D. Ramirez
+ST0075,Isaiah Williams,IMPACT,2024-06-29,Kelly College Prep,11,39,completed,D. Ramirez
+ST0076,Priya Jackson,IMPACT,2024-11-26,Senn HS,9,17,inactive,L. Brooks
+ST0077,Daniela Reyes,IMPACT,2024-12-10,Lincoln Park HS,12,20,active,L. Brooks
+ST0078,David Hernandez,IMPACT,2024-10-13,Curie Metro HS,11,35,active,L. Brooks
+ST0079,Aaliyah Patel,IMPACT,2025-05-15,Kelly College Prep,10,30,completed,D. Ramirez
+ST0080,Priya Garcia,ELEVATE,2024-10-28,Senn HS,12,15,active,J. Adeyemi
+ST0081,Kevin Ali,IMPACT,2025-03-11,Kelly College Prep,11,22,completed,M. Castillo
+ST0082,Carlos Hernandez,ELEVATE,2024-05-03,Senn HS,11,7,completed,S. Chen
+ST0083,Sofia Brown,IMPACT,2024-10-10,Curie Metro HS,11,6,completed,M. Castillo
+ST0084,Tyrone Kim,ELEVATE,2024-11-05,Lincoln Park HS,10,17,active,R. Okafor
+ST0085,Andre Davis,ELEVATE,2025-10-15,Lake View HS,9,0,active,D. Ramirez
+ST0086,Kevin Reyes,IMPACT,2024-07-07,Lincoln Park HS,11,30,active,T. Mendez
+ST0087,Lucia Thompson,ELEVATE,2025-08-13,Lincoln Park HS,10,9,completed,M. Castillo
+ST0088,Aaliyah Patel,ELEVATE,2025-07-25,Mather HS,10,33,active,D. Ramirez
+ST0089,Carlos Flores,IMPACT,2024-11-08,Curie Metro HS,9,39,inactive,T. Mendez
+ST0090,Daniela Brown,ELEVATE,2024-09-27,Roosevelt HS,10,15,active,T. Mendez
+ST0091,Marcus Garcia,IMPACT,2025-04-06,Curie Metro HS,12,18,active,M. Castillo
+ST0092,Isaiah Davis,IMPACT,2024-03-13,Senn HS,11,40,active,L. Brooks
+ST0093,Jamal Martinez,ELEVATE,2025-10-25,Wells Community Academy,11,9,active,S. Chen
+ST0094,Omar Davis,IMPACT,2025-03-25,Roosevelt HS,12,19,completed,M. Castillo
+ST0095,Esperanza Ali,IMPACT,2025-03-24,Roosevelt HS,9,27,completed,M. Castillo
+ST0096,Maria Nguyen,ELEVATE,2025-11-21,Curie Metro HS,9,17,active,S. Chen
+ST0097,Kevin Vargas,IMPACT,2024-10-11,Wells Community Academy,12,40,completed,T. Mendez
+ST0098,Kevin Kim,IMPACT,2024-12-07,Sullivan HS,9,10,active,D. Ramirez
+ST0099,Carlos Gonzalez,ELEVATE,2025-04-10,Roosevelt HS,11,16,active,K. Park
+ST0100,Mateo Vargas,ELEVATE,2025-11-04,Kelly College Prep,12,26,active,J. Adeyemi
+ST0101,Malik Thompson,IMPACT,2026-02-17,Lincoln Park HS,10,17,active,M. Castillo
+ST0102,Priya Thompson,ELEVATE,2024-01-30,Curie Metro HS,10,10,active,R. Okafor
+ST0103,Andre Jackson,ELEVATE,2024-08-18,Roosevelt HS,12,7,completed,S. Chen
+ST0104,Kevin Davis,IMPACT,2025-03-01,Lake View HS,12,15,active,S. Chen
+ST0105,Lucia Brown,ELEVATE,2024-03-12,Amundsen HS,12,21,inactive,M. Castillo
+ST0106,Keisha Garcia,IMPACT,2026-01-13,Amundsen HS,12,9,active,D. Ramirez
+ST0107,David Rodriguez,IMPACT,2025-04-11,Sullivan HS,10,15,active,L. Brooks
+ST0108,Mateo Jackson,ELEVATE,2024-11-21,Lake View HS,12,24,inactive,S. Chen
+ST0109,Kevin Johnson,ELEVATE,2025-05-29,Curie Metro HS,11,6,inactive,D. Ramirez
+ST0110,Diego Vargas,IMPACT,2024-01-16,Wells Community Academy,12,9,active,M. Castillo
+ST0111,Aisha Washington,IMPACT,2025-10-27,Roosevelt HS,11,34,active,J. Adeyemi
+ST0112,Yuki Thompson,ELEVATE,2025-09-24,Roosevelt HS,10,40,completed,M. Castillo
+ST0113,Tyrone Nguyen,IMPACT,2024-04-10,Roosevelt HS,12,10,completed,R. Okafor
+ST0114,Jose Rodriguez,ELEVATE,2024-10-27,Sullivan HS,11,27,active,K. Park
+ST0115,Ana Lopez,ELEVATE,2024-06-28,Roosevelt HS,12,39,completed,D. Ramirez
+ST0116,Hassan Flores,ELEVATE,2024-08-25,Lake View HS,11,29,active,R. Okafor
+ST0117,Naomi Reyes,IMPACT,2025-11-24,Kelly College Prep,10,4,active,J. Adeyemi
+ST0118,Ana Davis,IMPACT,2025-12-07,Amundsen HS,12,19,active,K. Park
+ST0119,Mateo Thompson,ELEVATE,2024-08-30,Mather HS,11,36,active,M. Castillo
+ST0120,Maria Gonzalez,IMPACT,2024-01-09,Curie Metro HS,9,38,completed,M. Castillo
+ST0121,Daniela Patel,IMPACT,2024-08-12,Senn HS,11,8,completed,R. Okafor
+ST0122,Carlos Reyes,ELEVATE,2025-08-16,Sullivan HS,10,5,inactive,J. Adeyemi
+ST0123,Linh Jackson,ELEVATE,2024-07-24,Wells Community Academy,11,33,active,M. Castillo
+ST0124,Keisha Lopez,IMPACT,2025-05-08,Amundsen HS,11,7,active,T. Mendez
+ST0125,Fatima Patel,IMPACT,2025-07-24,Sullivan HS,9,25,active,T. Mendez
+ST0126,Priya Kim,IMPACT,2025-08-21,Mather HS,11,6,completed,D. Ramirez
+ST0127,Maria Washington,IMPACT,2025-09-16,Senn HS,9,40,completed,M. Castillo
+ST0128,Yuki Jackson,ELEVATE,2024-05-23,Lincoln Park HS,9,19,inactive,T. Mendez
+ST0129,Diego Patel,ELEVATE,2025-02-01,Lake View HS,11,34,active,S. Chen
+ST0130,Naomi Jackson,ELEVATE,2025-05-16,Curie Metro HS,12,17,active,J. Adeyemi
+ST0131,Sofia Reyes,IMPACT,2024-08-29,Sullivan HS,9,23,active,J. Adeyemi
+ST0132,Jose Gonzalez,IMPACT,2024-07-13,Roosevelt HS,12,5,completed,R. Okafor
+ST0133,Jose Rodriguez,ELEVATE,2024-05-08,Curie Metro HS,10,4,completed,L. Brooks
+ST0134,Ana Brown,ELEVATE,2024-12-02,Wells Community Academy,9,17,inactive,S. Chen
+ST0135,Fatima Ali,IMPACT,2024-06-27,Roosevelt HS,9,8,active,L. Brooks
+ST0136,Ana Rodriguez,ELEVATE,2024-06-27,Amundsen HS,9,8,completed,T. Mendez
+ST0137,Linh Nguyen,IMPACT,2025-04-04,Sullivan HS,9,28,active,R. Okafor
+ST0138,Linh Vargas,IMPACT,2025-04-14,Lincoln Park HS,9,30,completed,K. Park
+ST0139,Rosa Martinez,IMPACT,2025-12-30,Lake View HS,9,5,active,S. Chen
+ST0140,Aaliyah Williams,IMPACT,2025-10-01,Curie Metro HS,11,24,inactive,M. Castillo
+ST0141,Priya Vargas,IMPACT,2024-04-11,Roosevelt HS,10,27,active,L. Brooks
+ST0142,Jamal Rodriguez,IMPACT,2025-02-12,Mather HS,9,20,active,M. Castillo
+ST0143,David Williams,IMPACT,2024-03-09,Roosevelt HS,9,5,active,J. Adeyemi
+ST0144,Omar Williams,ELEVATE,2025-08-23,Kelly College Prep,11,7,active,K. Park
+ST0145,Mateo Johnson,IMPACT,2025-09-06,Amundsen HS,11,6,active,L. Brooks
+ST0146,Fatima Thompson,ELEVATE,2024-04-20,Sullivan HS,11,7,completed,L. Brooks
+ST0147,Omar Jackson,ELEVATE,2025-09-15,Amundsen HS,9,11,active,M. Castillo
+ST0148,Hassan Rodriguez,IMPACT,2024-01-07,Wells Community Academy,10,36,completed,T. Mendez
+ST0149,Fatima Garcia,ELEVATE,2026-02-03,Kelly College Prep,10,24,active,J. Adeyemi
+ST0150,Marcus Kim,IMPACT,2026-01-08,Sullivan HS,9,3,active,R. Okafor
+ST0151,Rosa Nguyen,IMPACT,2025-03-29,Mather HS,12,38,active,M. Castillo
+ST0152,Sofia Vargas,ELEVATE,2024-12-19,Mather HS,9,18,completed,D. Ramirez
+ST0153,Esperanza Davis,ELEVATE,2024-08-13,Mather HS,9,0,active,L. Brooks
+ST0154,Daniela Williams,IMPACT,2024-10-23,Sullivan HS,9,0,active,K. Park
+ST0155,Marcus Williams,IMPACT,2025-06-29,Senn HS,11,4,active,R. Okafor
+ST0156,Jamal Garcia,IMPACT,2024-03-20,Sullivan HS,12,36,active,K. Park
+ST0157,Carlos Martinez,IMPACT,2024-01-22,Sullivan HS,10,39,active,J. Adeyemi
+ST0158,Aaliyah Jackson,ELEVATE,2024-09-06,Mather HS,12,33,active,M. Castillo
+ST0159,Linh Rodriguez,ELEVATE,2024-12-07,Wells Community Academy,9,32,completed,L. Brooks
+ST0160,Naomi Kim,IMPACT,2026-01-14,Wells Community Academy,10,6,active,L. Brooks
+ST0161,Marcus Washington,ELEVATE,2026-02-17,Roosevelt HS,10,40,active,D. Ramirez
+ST0162,Rosa Flores,IMPACT,2025-10-04,Sullivan HS,10,28,active,D. Ramirez
+ST0163,Yuki Davis,IMPACT,2025-08-28,Lincoln Park HS,11,32,active,D. Ramirez
+ST0164,Priya Johnson,ELEVATE,2025-01-12,Amundsen HS,9,5,completed,K. Park
+ST0165,Priya Flores,ELEVATE,2025-04-05,Curie Metro HS,10,20,completed,S. Chen
+ST0166,Jose Reyes,ELEVATE,2024-12-17,Roosevelt HS,10,2,active,D. Ramirez
+ST0167,Priya Vargas,ELEVATE,2025-01-07,Sullivan HS,11,24,active,J. Adeyemi
+ST0168,Rosa Washington,ELEVATE,2025-10-08,Sullivan HS,9,21,active,K. Park
+ST0169,Carlos Hernandez,ELEVATE,2024-12-07,Roosevelt HS,10,22,active,K. Park
+ST0170,Fatima Washington,ELEVATE,2024-11-13,Kelly College Prep,12,21,completed,T. Mendez
+ST0171,Yuki Jackson,IMPACT,2024-01-19,Sullivan HS,11,11,inactive,J. Adeyemi
+ST0172,Daniela Thompson,ELEVATE,2024-08-19,Wells Community Academy,10,4,active,T. Mendez
+ST0173,Esperanza Ali,ELEVATE,2025-11-08,Sullivan HS,10,38,active,S. Chen
+ST0174,Marcus Washington,ELEVATE,2026-01-08,Lake View HS,9,26,active,L. Brooks
+ST0175,Priya Washington,IMPACT,2026-02-09,Lake View HS,10,34,active,D. Ramirez
+ST0176,Naomi Brown,IMPACT,2025-11-25,Curie Metro HS,12,29,completed,K. Park
+ST0177,Esperanza Vargas,IMPACT,2024-06-14,Senn HS,10,16,active,D. Ramirez
+ST0178,Mateo Kim,ELEVATE,2025-12-29,Kelly College Prep,9,18,active,S. Chen
+ST0179,Mei Reyes,ELEVATE,2025-03-23,Roosevelt HS,10,28,inactive,R. Okafor
+ST0180,Jamal Johnson,IMPACT,2025-05-29,Sullivan HS,10,24,inactive,J. Adeyemi
+ST0181,Tyrone Garcia,IMPACT,2024-04-11,Sullivan HS,10,8,active,D. Ramirez
+ST0182,Isaiah Williams,IMPACT,2025-04-04,Curie Metro HS,9,5,active,L. Brooks
+ST0183,Keisha Williams,IMPACT,2024-04-23,Amundsen HS,10,19,active,L. Brooks
+ST0184,Jamal Washington,IMPACT,2024-03-05,Roosevelt HS,12,38,active,L. Brooks
+ST0185,Isaiah Williams,IMPACT,2025-03-15,Lincoln Park HS,11,15,active,S. Chen
+ST0186,Rosa Nguyen,IMPACT,2024-03-10,Kelly College Prep,9,24,inactive,R. Okafor
+ST0187,Yuki Gonzalez,IMPACT,2024-09-16,Lincoln Park HS,11,4,active,T. Mendez
+ST0188,Daniela Flores,IMPACT,2024-05-16,Lincoln Park HS,11,34,active,S. Chen
+ST0189,Keisha Reyes,IMPACT,2025-10-08,Wells Community Academy,10,4,completed,D. Ramirez
+ST0190,Jose Davis,ELEVATE,2024-02-14,Senn HS,9,20,inactive,K. Park
+ST0191,Keisha Ali,IMPACT,2024-09-16,Lincoln Park HS,10,18,active,R. Okafor
+ST0192,Mateo Rodriguez,IMPACT,2024-05-07,Sullivan HS,12,25,completed,K. Park
+ST0193,Aisha Lopez,IMPACT,2025-12-09,Lake View HS,11,33,active,T. Mendez
+ST0194,Linh Jackson,ELEVATE,2025-03-16,Curie Metro HS,10,34,active,T. Mendez
+ST0195,Aaliyah Rodriguez,IMPACT,2024-11-09,Lake View HS,12,10,completed,J. Adeyemi
+ST0196,Priya Johnson,IMPACT,2025-09-21,Mather HS,11,40,inactive,R. Okafor
+ST0197,Aaliyah Gonzalez,IMPACT,2025-06-09,Wells Community Academy,9,9,completed,D. Ramirez
+ST0198,Jose Williams,ELEVATE,2024-08-29,Sullivan HS,11,24,inactive,R. Okafor
+ST0199,Malik Williams,IMPACT,2025-01-14,Sullivan HS,12,4,active,J. Adeyemi
+ST0200,Lucia Rodriguez,IMPACT,2024-09-12,Roosevelt HS,9,11,active,K. Park
+ST0201,Hassan Ali,ELEVATE,2024-09-25,Amundsen HS,12,13,inactive,M. Castillo
+ST0202,Isaiah Thompson,ELEVATE,2024-05-05,Wells Community Academy,9,28,active,D. Ramirez
+ST0203,Aaliyah Rodriguez,IMPACT,2025-12-27,Roosevelt HS,11,19,inactive,S. Chen
+ST0204,Omar Kim,ELEVATE,2024-05-04,Senn HS,10,15,completed,R. Okafor
+ST0205,David Ali,IMPACT,2025-04-23,Kelly College Prep,10,39,inactive,T. Mendez
+ST0206,Carlos Gonzalez,IMPACT,2025-06-22,Mather HS,12,36,active,J. Adeyemi
+ST0207,Yuki Nguyen,IMPACT,2025-04-22,Kelly College Prep,11,8,inactive,S. Chen
+ST0208,Daniela Williams,IMPACT,2025-05-29,Lincoln Park HS,9,33,active,S. Chen
+ST0209,Marcus Rodriguez,ELEVATE,2024-12-20,Kelly College Prep,11,5,active,M. Castillo
+ST0210,Fatima Davis,ELEVATE,2025-05-29,Wells Community Academy,10,10,completed,J. Adeyemi
+ST0211,Keisha Flores,ELEVATE,2024-01-30,Roosevelt HS,9,36,active,L. Brooks
+ST0212,Daniela Flores,IMPACT,2025-09-24,Lincoln Park HS,12,40,active,M. Castillo
+ST0213,Kevin Patel,IMPACT,2024-10-31,Lake View HS,9,3,active,K. Park
+ST0214,Kevin Reyes,ELEVATE,2024-12-14,Curie Metro HS,10,20,inactive,J. Adeyemi
+ST0215,Linh Kim,IMPACT,2024-05-13,Sullivan HS,9,20,active,T. Mendez
+ST0216,Mei Reyes,ELEVATE,2024-05-24,Roosevelt HS,9,18,inactive,K. Park
+ST0217,Tyrone Lopez,IMPACT,2025-08-14,Sullivan HS,10,10,active,D. Ramirez
+ST0218,Kevin Davis,IMPACT,2024-01-24,Roosevelt HS,12,32,active,L. Brooks
+ST0219,Sofia Flores,IMPACT,2024-02-19,Lincoln Park HS,11,31,active,D. Ramirez
+ST0220,Carlos Ali,ELEVATE,2024-04-20,Mather HS,10,16,completed,K. Park
+ST0221,David Johnson,IMPACT,2024-02-22,Curie Metro HS,10,23,active,T. Mendez
+ST0222,Lucia Vargas,IMPACT,2026-02-21,Kelly College Prep,11,39,completed,T. Mendez
+ST0223,Fatima Martinez,IMPACT,2025-01-17,Sullivan HS,11,9,active,K. Park
+ST0224,Esperanza Johnson,ELEVATE,2024-02-09,Wells Community Academy,11,30,active,S. Chen
+ST0225,Malik Vargas,ELEVATE,2024-12-01,Curie Metro HS,11,10,active,M. Castillo
+ST0226,Ana Rodriguez,IMPACT,2025-12-26,Curie Metro HS,11,30,completed,J. Adeyemi
+ST0227,Aisha Martinez,IMPACT,2025-08-20,Amundsen HS,9,38,active,L. Brooks
+ST0228,Linh Johnson,IMPACT,2024-06-23,Kelly College Prep,12,9,completed,L. Brooks
+ST0229,Jose Flores,ELEVATE,2024-07-14,Lincoln Park HS,12,20,active,K. Park
+ST0230,Isaiah Brown,IMPACT,2025-05-28,Curie Metro HS,12,3,completed,L. Brooks
+ST0231,Andre Rodriguez,IMPACT,2025-06-22,Mather HS,11,11,active,J. Adeyemi
+ST0232,Andre Kim,IMPACT,2025-09-16,Lake View HS,10,15,active,M. Castillo
+ST0233,Tyrone Davis,IMPACT,2025-12-22,Senn HS,12,20,active,M. Castillo
+ST0234,Carlos Martinez,IMPACT,2025-02-08,Sullivan HS,10,18,active,T. Mendez
+ST0235,David Reyes,IMPACT,2026-02-04,Lake View HS,10,12,completed,M. Castillo
+ST0236,Hassan Ali,IMPACT,2024-05-20,Roosevelt HS,10,15,active,L. Brooks
+ST0237,Yuki Patel,ELEVATE,2024-04-12,Mather HS,11,30,active,S. Chen
+ST0238,Maria Ali,ELEVATE,2025-02-20,Lake View HS,12,12,completed,M. Castillo
+ST0239,Aisha Davis,ELEVATE,2026-02-26,Roosevelt HS,10,34,completed,R. Okafor
+ST0240,Hassan Lopez,IMPACT,2024-06-29,Lincoln Park HS,12,31,active,M. Castillo
+ST0241,Naomi Johnson,ELEVATE,2024-11-01,Curie Metro HS,9,21,active,D. Ramirez
+ST0242,Naomi Williams,IMPACT,2024-10-06,Senn HS,9,21,active,D. Ramirez
+ST0243,Yuki Hernandez,ELEVATE,2024-01-15,Sullivan HS,11,36,completed,L. Brooks
+ST0244,Marcus Washington,IMPACT,2025-03-13,Kelly College Prep,11,5,active,T. Mendez
+ST0245,Marcus Williams,IMPACT,2024-11-27,Senn HS,9,16,active,D. Ramirez
+ST0246,Daniela Hernandez,IMPACT,2024-11-05,Curie Metro HS,9,16,completed,L. Brooks
+ST0247,Jose Martinez,IMPACT,2024-11-10,Wells Community Academy,12,32,inactive,M. Castillo
+ST0248,Isaiah Martinez,IMPACT,2025-01-11,Curie Metro HS,10,14,inactive,D. Ramirez
+ST0249,Fatima Reyes,IMPACT,2025-03-01,Kelly College Prep,12,34,completed,L. Brooks
+ST0250,Daniela Patel,ELEVATE,2025-06-22,Lake View HS,11,4,inactive,T. Mendez
+ST0251,Jose Ali,ELEVATE,2025-08-09,Kelly College Prep,10,10,active,D. Ramirez
+ST0252,Diego Brown,IMPACT,2024-04-03,Kelly College Prep,12,3,active,K. Park
+ST0253,Priya Flores,ELEVATE,2025-07-26,Lake View HS,11,1,active,R. Okafor
+ST0254,Linh Brown,ELEVATE,2024-02-16,Mather HS,11,4,active,R. Okafor
+ST0255,Hassan Nguyen,IMPACT,2024-02-02,Amundsen HS,12,11,completed,K. Park
+ST0256,David Gonzalez,IMPACT,2025-01-21,Mather HS,9,34,active,J. Adeyemi
+ST0257,Diego Lopez,IMPACT,2025-06-25,Wells Community Academy,10,0,completed,M. Castillo
+ST0258,Priya Ali,IMPACT,2025-06-28,Mather HS,10,15,active,S. Chen
+ST0259,Mei Brown,ELEVATE,2024-02-02,Mather HS,9,15,active,T. Mendez
+ST0260,Malik Johnson,IMPACT,2025-09-04,Lincoln Park HS,10,2,active,L. Brooks
+ST0261,Andre Brown,ELEVATE,2024-05-23,Kelly College Prep,11,14,completed,J. Adeyemi
+ST0262,Ana Washington,IMPACT,2024-08-30,Amundsen HS,10,33,active,M. Castillo
+ST0263,Mei Johnson,ELEVATE,2025-10-03,Mather HS,12,3,inactive,K. Park
+ST0264,Omar Vargas,IMPACT,2025-12-14,Mather HS,12,9,active,S. Chen
+ST0265,Daniela Ali,IMPACT,2024-09-03,Senn HS,11,9,completed,R. Okafor
+ST0266,Andre Jackson,IMPACT,2025-07-24,Kelly College Prep,10,24,active,L. Brooks
+ST0267,Aisha Nguyen,IMPACT,2025-01-14,Roosevelt HS,10,3,active,R. Okafor
+ST0268,Mateo Nguyen,ELEVATE,2026-02-18,Curie Metro HS,10,30,active,J. Adeyemi
+ST0269,Carlos Garcia,ELEVATE,2024-07-13,Roosevelt HS,12,15,completed,L. Brooks
+ST0270,Lucia Patel,IMPACT,2024-10-16,Mather HS,12,34,completed,M. Castillo
+ST0271,Mei Kim,IMPACT,2025-04-22,Roosevelt HS,12,20,inactive,J. Adeyemi
+ST0272,Aisha Jackson,ELEVATE,2025-07-30,Senn HS,10,1,active,K. Park
+ST0273,Carlos Williams,ELEVATE,2024-12-03,Senn HS,12,36,completed,D. Ramirez
+ST0274,Andre Rodriguez,IMPACT,2026-02-20,Lake View HS,12,29,active,J. Adeyemi
+ST0275,Marcus Williams,IMPACT,2024-07-07,Kelly College Prep,9,33,active,T. Mendez
+ST0276,Keisha Johnson,ELEVATE,2025-02-26,Wells Community Academy,10,4,completed,R. Okafor
+ST0277,Sofia Vargas,IMPACT,2025-01-17,Lincoln Park HS,12,31,active,K. Park
+ST0278,Maria Garcia,IMPACT,2025-07-02,Amundsen HS,9,32,completed,K. Park
+ST0279,Omar Lopez,ELEVATE,2024-04-08,Kelly College Prep,10,15,active,M. Castillo
+ST0280,Keisha Kim,IMPACT,2025-02-10,Roosevelt HS,11,25,active,L. Brooks
+ST0281,Isaiah Patel,IMPACT,2025-12-01,Roosevelt HS,9,5,active,K. Park
+ST0282,Andre Thompson,ELEVATE,2025-10-14,Lincoln Park HS,10,5,active,K. Park
+ST0283,Yuki Rodriguez,ELEVATE,2025-06-24,Lincoln Park HS,10,13,inactive,D. Ramirez
+ST0284,Mei Johnson,ELEVATE,2025-12-01,Amundsen HS,9,11,inactive,J. Adeyemi
+ST0285,Maria Brown,ELEVATE,2026-02-09,Mather HS,9,19,active,L. Brooks
+ST0286,Ana Gonzalez,IMPACT,2025-01-28,Wells Community Academy,9,32,completed,J. Adeyemi
+ST0287,Jose Martinez,IMPACT,2024-08-25,Roosevelt HS,11,38,completed,K. Park
+ST0288,Daniela Rodriguez,ELEVATE,2025-10-11,Amundsen HS,12,31,active,K. Park
+ST0289,Jamal Lopez,IMPACT,2024-03-28,Curie Metro HS,11,15,completed,T. Mendez
+ST0290,Mei Williams,IMPACT,2025-12-29,Wells Community Academy,12,20,active,T. Mendez
+ST0291,Maria Davis,IMPACT,2025-01-03,Amundsen HS,9,8,active,K. Park
+ST0292,Priya Ali,IMPACT,2024-04-15,Lincoln Park HS,9,22,active,J. Adeyemi
+ST0293,Mateo Gonzalez,ELEVATE,2024-10-25,Mather HS,12,5,completed,L. Brooks
+ST0294,Ana Vargas,ELEVATE,2025-12-02,Mather HS,10,8,active,M. Castillo
+ST0295,Kevin Williams,ELEVATE,2024-06-20,Mather HS,11,26,active,T. Mendez
+ST0296,David Hernandez,ELEVATE,2026-01-08,Lake View HS,10,29,active,M. Castillo
+ST0297,Maria Gonzalez,IMPACT,2025-09-27,Mather HS,11,28,active,S. Chen
+ST0298,Carlos Rodriguez,ELEVATE,2025-05-05,Sullivan HS,10,25,inactive,M. Castillo
+ST0299,Linh Thompson,ELEVATE,2024-11-29,Mather HS,11,25,active,L. Brooks
+ST0300,Ana Ali,ELEVATE,2025-11-29,Kelly College Prep,9,29,inactive,L. Brooks
