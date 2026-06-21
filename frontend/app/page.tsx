@@ -7,7 +7,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 type TraceStep = { tool: string; args: Record<string, any>; result?: any; ms?: number };
 type Source = { filename: string; type: string; passages: number };
 type Run = { trace: TraceStep[]; latency: number; steps: number; sources: Source[] };
-type Message = { role: "user" | "assistant"; content: string; run?: Run };
+type Message = { role: "user" | "assistant"; content: string; run?: Run; streaming?: boolean };
 
 const EXAMPLES = [
   "How does a parent file a state complaint about special education?",
@@ -152,41 +152,94 @@ export default function Home() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
+  // update the last message (the streaming assistant placeholder)
+  function patchLast(updater: (m: Message) => Message) {
+    setMessages((arr) => {
+      const copy = [...arr];
+      copy[copy.length - 1] = updater(copy[copy.length - 1]);
+      return copy;
+    });
+  }
+
   async function send(text?: string) {
     const q = (text ?? input).trim();
     if (!q || loading) return;
     setInput("");
-    setMessages((m) => [...m, { role: "user", content: q }]);
+    setMessages((m) => [
+      ...m,
+      { role: "user", content: q },
+      { role: "assistant", content: "", streaming: true, run: { trace: [], latency: 0, steps: 0, sources: [] } },
+    ]);
     setLoading(true);
+
     try {
-      const res = await fetch(`${API}/agent/query`, {
+      const res = await fetch(`${API}/agent/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: q, session_id: sessionId }),
       });
-      if (!res.ok) throw new Error(`server responded ${res.status}`);
-      const data = await res.json();
-      setSessionId(data.session_id);
-      setMessages((m) => [
-        ...m,
-        {
-          role: "assistant",
-          content: data.answer,
-          run: {
-            trace: data.tool_trace || [],
-            latency: data.latency_ms,
-            steps: data.steps,
-            sources: data.sources || [],
-          },
-        },
-      ]);
+      if (!res.ok || !res.body) throw new Error(`server responded ${res.status}`);
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        let idx: number;
+        while ((idx = buffer.indexOf("\n\n")) !== -1) {
+          const raw = buffer.slice(0, idx);
+          buffer = buffer.slice(idx + 2);
+          let event = "message";
+          let dataStr = "";
+          for (const line of raw.split("\n")) {
+            if (line.startsWith("event:")) event = line.slice(6).trim();
+            else if (line.startsWith("data:")) dataStr += line.slice(5).trim();
+          }
+          const data = dataStr ? JSON.parse(dataStr) : {};
+          handleEvent(event, data);
+        }
+      }
     } catch (e: any) {
-      setMessages((m) => [
+      patchLast((m) => ({
         ...m,
-        { role: "assistant", content: `The assistant is unreachable (${e.message}). Confirm the backend is running at ${API}.` },
-      ]);
+        streaming: false,
+        content: `The assistant is unreachable (${e.message}). Confirm the backend is running at ${API}.`,
+      }));
     } finally {
       setLoading(false);
+    }
+  }
+
+  function handleEvent(event: string, data: any) {
+    if (event === "start") {
+      if (data.session_id) setSessionId(data.session_id);
+    } else if (event === "token") {
+      patchLast((m) => ({ ...m, content: m.content + (data.text || "") }));
+    } else if (event === "reset") {
+      patchLast((m) => ({ ...m, content: "" }));
+    } else if (event === "tool") {
+      patchLast((m) => ({
+        ...m,
+        run: { ...(m.run as Run), trace: [...(m.run as Run).trace, data as TraceStep] },
+      }));
+    } else if (event === "done") {
+      patchLast((m) => ({
+        ...m,
+        streaming: false,
+        content: data.answer ?? m.content,
+        run: {
+          trace: data.tool_trace || (m.run as Run).trace,
+          latency: data.latency_ms,
+          steps: data.steps,
+          sources: data.sources || [],
+        },
+      }));
+    } else if (event === "error") {
+      patchLast((m) => ({ ...m, streaming: false, content: `Error: ${data.message}` }));
     }
   }
 
@@ -245,19 +298,17 @@ export default function Home() {
                     <div className="msg assistant" key={i}>
                       <div className="avatar-row">
                         <div className="mini-logo">iA</div>
-                        <div className="bubble">{parseBold(m.content)}</div>
+                        {m.content === "" && m.streaming ? (
+                          <div className="running"><span className="dot" />Working through documents and data</div>
+                        ) : (
+                          <div className="bubble">
+                            {parseBold(m.content)}
+                            {m.streaming && <span className="cursor" />}
+                          </div>
+                        )}
                       </div>
                     </div>
                   )
-                )}
-
-                {loading && (
-                  <div className="msg assistant">
-                    <div className="avatar-row">
-                      <div className="mini-logo">iA</div>
-                      <div className="running"><span className="dot" />Working through documents and data</div>
-                    </div>
-                  </div>
                 )}
               </div>
             </div>
@@ -287,22 +338,12 @@ export default function Home() {
         </section>
 
         <aside className="rail">
-          {loading && (
+          {(loading || lastRun) && (
             <div>
               <div className="panel-label">Run status</div>
-              <div className="panel"><div className="running"><span className="dot" />Planning and calling tools</div></div>
-            </div>
-          )}
-
-          {!loading && lastRun && (
-            <>
-              <div>
-                <div className="panel-label">Run status</div>
-                <div className="panel">
-                  {lastRun.trace.length === 0 && (
-                    <div className="write-step">Answered directly, no tools needed.</div>
-                  )}
-                  {lastRun.trace.map((s, j) => (
+              <div className="panel">
+                {lastRun && lastRun.trace.length > 0 ? (
+                  lastRun.trace.map((s, j) => (
                     <div className="run-step" key={j}>
                       <span className="n">{j + 1}</span>
                       <div className="rs-body">
@@ -310,10 +351,18 @@ export default function Home() {
                         {summarizeResult(s) && <div className="rs-meta">{summarizeResult(s)}</div>}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  ))
+                ) : loading ? (
+                  <div className="running"><span className="dot" />Planning and calling tools</div>
+                ) : (
+                  <div className="write-step">Answered directly, no tools needed.</div>
+                )}
               </div>
+            </div>
+          )}
 
+          {!loading && lastRun && (
+            <>
               <div>
                 <div className="panel-label">Write step</div>
                 <div className="panel">
@@ -346,7 +395,7 @@ export default function Home() {
                       <div className="source-item" key={i}>
                         <span className={`src-type ${s.type}`}>{s.type.toUpperCase()}</span>
                         <div className="src-main">
-                          <div className="src-name">{s.filename}</div>
+                          <div className="src-name" title={s.filename}>{s.filename}</div>
                           <div className="src-sub">{s.passages} passage{s.passages === 1 ? "" : "s"} cited</div>
                         </div>
                         <span className="src-num">{i + 1}</span>

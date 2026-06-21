@@ -1,20 +1,21 @@
 """
-The agent loop with session memory.
+The agent loop with session memory, in two forms.
 
-The loop is a standard tool-calling cycle:
+run_agent runs the full tool-calling cycle and returns one JSON result.
+run_agent_stream runs the same cycle as an async generator, yielding
+events so the client can show tokens and tool steps as they happen.
 
+The cycle:
   1. Send the question and the tool schemas to the model.
   2. If the model requests tools, run them and feed results back.
   3. Repeat until the model answers in plain text, or a step cap is hit
      so a confused model cannot loop forever.
 
-Each tool call records its result and how long it took, so the client
-can show a full run trace. Document sources are collected into a compact
-sources list for the answer. Session memory replays recent turns so the
-model can resolve follow-up references.
+Each tool call records its result and how long it took. Document sources
+are collected into a compact list. Session memory replays recent turns.
 
-The loop is built directly rather than with a framework, which keeps
-the control flow visible and debuggable.
+The loop is built directly rather than with a framework, which keeps the
+control flow visible and debuggable.
 """
 
 import json
@@ -67,9 +68,7 @@ async def _resolve_session(conn, session_id, user_id):
         except ValueError:
             session_id = None
     if session_id:
-        row = await conn.fetchrow(
-            "SELECT id FROM sessions WHERE id = $1::uuid", session_id
-        )
+        row = await conn.fetchrow("SELECT id FROM sessions WHERE id = $1::uuid", session_id)
         if row:
             return row["id"]
     row = await conn.fetchrow(
@@ -109,12 +108,6 @@ async def _save_turn(conn, session_id, query, answer, tool_trace, latency_ms):
 # ---------- result shaping ----------
 
 def _trim_for_client(tool: str, result: dict):
-    """Keep the client payload small.
-
-    Document search returns full passage text, which the model needs but
-    the UI does not. Strip the text and keep source and index. Data tool
-    results are small and pass through unchanged.
-    """
     if tool == "search_documents" and isinstance(result, dict) and "results" in result:
         return {
             "results": [
@@ -126,7 +119,6 @@ def _trim_for_client(tool: str, result: dict):
 
 
 def _collect_sources(tool_trace: list) -> list:
-    """Build a compact source list from document search steps."""
     counts: dict[str, int] = {}
     for step in tool_trace:
         if step["tool"] != "search_documents":
@@ -160,25 +152,17 @@ def _build_system_prompt(datasets: list[dict]) -> str:
         f"2. Uploaded datasets, via the data analysis tools.\n\n"
         f"{ds_block}\n\n"
         f"Rules:\n"
-        f"- Use search_documents for policy, eligibility, rules, or procedure "
-        f"questions.\n"
-        f"- Use the data tools for counts, averages, trends, ratios, outliers, "
-        f"or period comparisons.\n"
+        f"- Use search_documents for policy, eligibility, rules, or procedure questions.\n"
+        f"- Use the data tools for counts, averages, trends, ratios, outliers, or period comparisons.\n"
         f"- A question may need both. Call the tools you need, then answer.\n"
-        f"- Ground your answer in tool results. When you use a document, name "
-        f"the source file.\n"
-        f"- If the tools do not contain the answer, say so plainly instead of "
-        f"guessing."
+        f"- Ground your answer in tool results. When you use a document, name the source file.\n"
+        f"- If the tools do not contain the answer, say so plainly instead of guessing."
     )
 
 
-# ---------- main loop ----------
-
-async def run_agent(conn, query: str, session_id=None) -> dict:
-    client = _get_client()
+async def _prepare(conn, query, session_id):
     user_id = await _get_dev_user(conn)
     session = await _resolve_session(conn, session_id, user_id)
-
     datasets = await available_datasets(conn)
     history = await _load_history(conn, session)
 
@@ -188,6 +172,14 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
         if turn["answer"]:
             messages.append({"role": "assistant", "content": turn["answer"]})
     messages.append({"role": "user", "content": query})
+    return session, messages
+
+
+# ---------- non-streaming loop ----------
+
+async def run_agent(conn, query: str, session_id=None) -> dict:
+    client = _get_client()
+    session, messages = await _prepare(conn, query, session_id)
 
     tool_trace = []
     start = time.time()
@@ -196,13 +188,9 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
 
     for step in range(MAX_STEPS):
         resp = await client.chat.completions.create(
-            model=CHAT_MODEL,
-            messages=messages,
-            tools=TOOL_SCHEMAS,
-            tool_choice="auto",
+            model=CHAT_MODEL, messages=messages, tools=TOOL_SCHEMAS, tool_choice="auto"
         )
         msg = resp.choices[0].message
-
         if not msg.tool_calls:
             answer = msg.content
             used_steps = step + 1
@@ -212,36 +200,25 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
             "role": "assistant",
             "content": msg.content,
             "tool_calls": [
-                {
-                    "id": tc.id,
-                    "type": "function",
-                    "function": {"name": tc.function.name, "arguments": tc.function.arguments},
-                }
+                {"id": tc.id, "type": "function",
+                 "function": {"name": tc.function.name, "arguments": tc.function.arguments}}
                 for tc in msg.tool_calls
             ],
         })
-
         for tc in msg.tool_calls:
             try:
                 args = json.loads(tc.function.arguments)
             except json.JSONDecodeError:
                 args = {}
-
             t0 = time.perf_counter()
             result = await execute_tool(conn, tc.function.name, args)
             ms = int((time.perf_counter() - t0) * 1000)
-
             tool_trace.append({
-                "tool": tc.function.name,
-                "args": args,
-                "result": _trim_for_client(tc.function.name, result),
-                "ms": ms,
+                "tool": tc.function.name, "args": args,
+                "result": _trim_for_client(tc.function.name, result), "ms": ms,
             })
-
-            # the model still gets the full, untrimmed result
             messages.append({
-                "role": "tool",
-                "tool_call_id": tc.id,
+                "role": "tool", "tool_call_id": tc.id,
                 "content": json.dumps(result, default=str),
             })
 
@@ -250,12 +227,104 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
 
     latency_ms = int((time.time() - start) * 1000)
     await _save_turn(conn, session, query, answer, tool_trace, latency_ms)
-
     return {
-        "answer": answer,
-        "session_id": str(session),
-        "steps": used_steps,
-        "tool_trace": tool_trace,
-        "sources": _collect_sources(tool_trace),
+        "answer": answer, "session_id": str(session), "steps": used_steps,
+        "tool_trace": tool_trace, "sources": _collect_sources(tool_trace),
         "latency_ms": latency_ms,
     }
+
+
+# ---------- streaming loop ----------
+
+async def run_agent_stream(conn, query: str, session_id=None):
+    """Async generator yielding (event, data) tuples.
+
+    Events: start, token, reset, tool, done, error. Token events carry
+    answer text as it generates. Tool events fire as each tool finishes.
+    Done carries the final structured run data.
+    """
+    client = _get_client()
+    session, messages = await _prepare(conn, query, session_id)
+
+    tool_trace = []
+    start = time.time()
+    answer = None
+    used_steps = MAX_STEPS
+
+    yield ("start", {"session_id": str(session)})
+
+    for step in range(MAX_STEPS):
+        stream = await client.chat.completions.create(
+            model=CHAT_MODEL, messages=messages, tools=TOOL_SCHEMAS,
+            tool_choice="auto", stream=True,
+        )
+
+        turn_content = ""
+        calls: dict[int, dict] = {}
+
+        async for chunk in stream:
+            if not chunk.choices:
+                continue
+            delta = chunk.choices[0].delta
+            if delta.content:
+                turn_content += delta.content
+                yield ("token", {"text": delta.content})
+            if delta.tool_calls:
+                for tcd in delta.tool_calls:
+                    slot = calls.setdefault(tcd.index, {"id": None, "name": "", "args": ""})
+                    if tcd.id:
+                        slot["id"] = tcd.id
+                    if tcd.function:
+                        if tcd.function.name:
+                            slot["name"] += tcd.function.name
+                        if tcd.function.arguments:
+                            slot["args"] += tcd.function.arguments
+
+        if calls:
+            # any text in a tool turn is a preamble, not the final answer
+            if turn_content:
+                yield ("reset", {})
+            ordered = [calls[i] for i in sorted(calls)]
+            messages.append({
+                "role": "assistant",
+                "content": turn_content or None,
+                "tool_calls": [
+                    {"id": c["id"], "type": "function",
+                     "function": {"name": c["name"], "arguments": c["args"]}}
+                    for c in ordered
+                ],
+            })
+            for c in ordered:
+                try:
+                    args = json.loads(c["args"])
+                except json.JSONDecodeError:
+                    args = {}
+                t0 = time.perf_counter()
+                result = await execute_tool(conn, c["name"], args)
+                ms = int((time.perf_counter() - t0) * 1000)
+                trimmed = _trim_for_client(c["name"], result)
+                tool_trace.append({"tool": c["name"], "args": args, "result": trimmed, "ms": ms})
+                yield ("tool", {
+                    "index": len(tool_trace), "tool": c["name"],
+                    "args": args, "result": trimmed, "ms": ms,
+                })
+                messages.append({
+                    "role": "tool", "tool_call_id": c["id"],
+                    "content": json.dumps(result, default=str),
+                })
+        else:
+            answer = turn_content
+            used_steps = step + 1
+            break
+
+    if answer is None:
+        answer = "I couldn't finish within the step limit. Try a simpler question."
+        yield ("token", {"text": answer})
+
+    latency_ms = int((time.time() - start) * 1000)
+    await _save_turn(conn, session, query, answer, tool_trace, latency_ms)
+    yield ("done", {
+        "answer": answer, "session_id": str(session), "steps": used_steps,
+        "tool_trace": tool_trace, "sources": _collect_sources(tool_trace),
+        "latency_ms": latency_ms,
+    })
