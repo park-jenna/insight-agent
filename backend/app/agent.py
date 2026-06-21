@@ -8,11 +8,10 @@ The loop is a standard tool-calling cycle:
   3. Repeat until the model answers in plain text, or a step cap is hit
      so a confused model cannot loop forever.
 
-Session memory: each query and answer is stored per session. On a
-follow-up, recent turns are replayed as conversation history so the
-model can resolve references like "what about the inactive ones".
-History is capped to the last few turns to stay within the context
-window.
+Each tool call records its result and how long it took, so the client
+can show a full run trace. Document sources are collected into a compact
+sources list for the answer. Session memory replays recent turns so the
+model can resolve follow-up references.
 
 The loop is built directly rather than with a framework, which keeps
 the control flow visible and debuggable.
@@ -34,7 +33,7 @@ CHAT_MODEL = os.getenv("CHAT_MODEL", "gpt-4o-mini")
 DOMAIN_LABEL = os.getenv("SYSTEM_PROMPT_LABEL", "document and data assistant")
 DEV_USER_EMAIL = "dev@insightagent.local"
 MAX_STEPS = 6
-HISTORY_TURNS = 6  # how many prior turns to replay as context
+HISTORY_TURNS = 6
 
 _client: AsyncOpenAI | None = None
 
@@ -62,7 +61,6 @@ async def _get_dev_user(conn):
 
 
 async def _resolve_session(conn, session_id, user_id):
-    """Return an existing session id, or create a new one."""
     if session_id:
         try:
             uuidlib.UUID(str(session_id))
@@ -91,7 +89,7 @@ async def _load_history(conn, session_id, limit=HISTORY_TURNS):
         session_id,
         limit,
     )
-    return list(reversed(rows))  # oldest first
+    return list(reversed(rows))
 
 
 async def _save_turn(conn, session_id, query, answer, tool_trace, latency_ms):
@@ -103,9 +101,45 @@ async def _save_turn(conn, session_id, query, answer, tool_trace, latency_ms):
         session_id,
         query,
         answer,
-        json.dumps(tool_trace),
+        json.dumps(tool_trace, default=str),
         latency_ms,
     )
+
+
+# ---------- result shaping ----------
+
+def _trim_for_client(tool: str, result: dict):
+    """Keep the client payload small.
+
+    Document search returns full passage text, which the model needs but
+    the UI does not. Strip the text and keep source and index. Data tool
+    results are small and pass through unchanged.
+    """
+    if tool == "search_documents" and isinstance(result, dict) and "results" in result:
+        return {
+            "results": [
+                {"source": r.get("source"), "chunk_index": r.get("chunk_index")}
+                for r in result["results"]
+            ]
+        }
+    return result
+
+
+def _collect_sources(tool_trace: list) -> list:
+    """Build a compact source list from document search steps."""
+    counts: dict[str, int] = {}
+    for step in tool_trace:
+        if step["tool"] != "search_documents":
+            continue
+        for r in (step.get("result") or {}).get("results", []):
+            fn = r.get("source")
+            if fn:
+                counts[fn] = counts.get(fn, 0) + 1
+    sources = []
+    for fn, n in counts.items():
+        ext = fn.rsplit(".", 1)[-1].lower() if "." in fn else "file"
+        sources.append({"filename": fn, "type": ext, "passages": n})
+    return sources
 
 
 # ---------- prompt ----------
@@ -181,10 +215,7 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
                 {
                     "id": tc.id,
                     "type": "function",
-                    "function": {
-                        "name": tc.function.name,
-                        "arguments": tc.function.arguments,
-                    },
+                    "function": {"name": tc.function.name, "arguments": tc.function.arguments},
                 }
                 for tc in msg.tool_calls
             ],
@@ -195,8 +226,19 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
                 args = json.loads(tc.function.arguments)
             except json.JSONDecodeError:
                 args = {}
+
+            t0 = time.perf_counter()
             result = await execute_tool(conn, tc.function.name, args)
-            tool_trace.append({"tool": tc.function.name, "args": args})
+            ms = int((time.perf_counter() - t0) * 1000)
+
+            tool_trace.append({
+                "tool": tc.function.name,
+                "args": args,
+                "result": _trim_for_client(tc.function.name, result),
+                "ms": ms,
+            })
+
+            # the model still gets the full, untrimmed result
             messages.append({
                 "role": "tool",
                 "tool_call_id": tc.id,
@@ -214,5 +256,6 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
         "session_id": str(session),
         "steps": used_steps,
         "tool_trace": tool_trace,
+        "sources": _collect_sources(tool_trace),
         "latency_ms": latency_ms,
     }
