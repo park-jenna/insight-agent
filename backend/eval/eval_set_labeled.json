@@ -1,0 +1,304 @@
+{
+  "description": "InsightAgent evaluation set. Each query is labeled by type and by what makes a correct, grounded answer. Data-query expected values are computed from the seeded student_enrollment.csv (random.seed(42), 300 rows). Document-query relevant chunks are resolved against the live database by label_eval_set.py, which marks any chunk containing relevant_phrase as relevant ground truth.",
+  "queries": [
+    {
+      "id": "doc01",
+      "query": "How does a parent file a state complaint about special education?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "State Complaint Procedures",
+      "answer_must_contain": [
+        "written",
+        "State Board of Education"
+      ],
+      "relevant_chunk_ids": [
+        "5",
+        "179"
+      ]
+    },
+    {
+      "id": "doc02",
+      "query": "What must a written special education complaint include?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "signature",
+      "answer_must_contain": [
+        "signed"
+      ],
+      "relevant_chunk_ids": [
+        "51",
+        "180"
+      ]
+    },
+    {
+      "id": "doc03",
+      "query": "Which federal regulations govern the state complaint process?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "34 CFR 300.151",
+      "answer_must_contain": [
+        "34 CFR"
+      ],
+      "relevant_chunk_ids": [
+        "179"
+      ]
+    },
+    {
+      "id": "doc04",
+      "query": "Who can file a special education complaint?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "A complaint",
+      "answer_must_contain": [
+        "parent"
+      ],
+      "relevant_chunk_ids": [
+        "165",
+        "166",
+        "181",
+        "185",
+        "186"
+      ]
+    },
+    {
+      "id": "doc05",
+      "query": "What is the role of an impartial due process hearing?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "impartial due process hearing",
+      "answer_must_contain": [
+        "hearing"
+      ],
+      "relevant_chunk_ids": [
+        "5",
+        "6",
+        "139",
+        "193",
+        "194",
+        "195",
+        "197"
+      ]
+    },
+    {
+      "id": "doc06",
+      "query": "What rights do parents have if a district fails to evaluate a child?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "initial evaluation",
+      "answer_must_contain": [
+        "evaluation"
+      ],
+      "relevant_chunk_ids": [
+        "38",
+        "39",
+        "43",
+        "44"
+      ]
+    },
+    {
+      "id": "doc07",
+      "query": "What does IDEA stand for in special education law?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "Individuals with Disabilities Education Act",
+      "answer_must_contain": [
+        "Individuals with Disabilities Education Act"
+      ],
+      "relevant_chunk_ids": [
+        "26",
+        "142",
+        "213"
+      ]
+    },
+    {
+      "id": "doc08",
+      "query": "What consent is required before a special education evaluation?",
+      "type": "document",
+      "expected_source": "isbe_consent_forms_instructions.pdf",
+      "relevant_phrase": "written consent",
+      "answer_must_contain": [
+        "consent"
+      ],
+      "relevant_chunk_ids": [
+        "359",
+        "361",
+        "365",
+        "386",
+        "416"
+      ]
+    },
+    {
+      "id": "data01",
+      "query": "How many students are active?",
+      "type": "data",
+      "expected_answer": "186",
+      "answer_must_contain": [
+        "186"
+      ]
+    },
+    {
+      "id": "data02",
+      "query": "How many students are inactive?",
+      "type": "data",
+      "expected_answer": "44",
+      "answer_must_contain": [
+        "44"
+      ]
+    },
+    {
+      "id": "data03",
+      "query": "How many students have completed the program?",
+      "type": "data",
+      "expected_answer": "70",
+      "answer_must_contain": [
+        "70"
+      ]
+    },
+    {
+      "id": "data04",
+      "query": "How many students are enrolled in total?",
+      "type": "data",
+      "expected_answer": "300",
+      "answer_must_contain": [
+        "300"
+      ]
+    },
+    {
+      "id": "data05",
+      "query": "How many students are in the ELEVATE program?",
+      "type": "data",
+      "expected_answer": "133",
+      "answer_must_contain": [
+        "133"
+      ]
+    },
+    {
+      "id": "data06",
+      "query": "How many students are in the IMPACT program?",
+      "type": "data",
+      "expected_answer": "167",
+      "answer_must_contain": [
+        "167"
+      ]
+    },
+    {
+      "id": "data07",
+      "query": "What percentage of students are active?",
+      "type": "data",
+      "expected_answer": "62",
+      "answer_must_contain": [
+        "62"
+      ]
+    },
+    {
+      "id": "data08",
+      "query": "What percentage of students are in the ELEVATE program?",
+      "type": "data",
+      "expected_answer": "44.3",
+      "answer_must_contain": [
+        "44"
+      ]
+    },
+    {
+      "id": "data09",
+      "query": "How many students enrolled before June 2025 versus on or after?",
+      "type": "data",
+      "expected_answer": "201 before, 99 after",
+      "answer_must_contain": [
+        "201",
+        "99"
+      ]
+    },
+    {
+      "id": "data10",
+      "query": "How many students are in grade 12?",
+      "type": "data",
+      "expected_answer": "66",
+      "answer_must_contain": [
+        "66"
+      ]
+    },
+    {
+      "id": "hyb01",
+      "query": "How many students are in ELEVATE, and what is the process for filing a state complaint?",
+      "type": "hybrid",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "State Complaint Procedures",
+      "expected_answer": "133",
+      "answer_must_contain": [
+        "133",
+        "complaint"
+      ],
+      "relevant_chunk_ids": [
+        "5",
+        "179"
+      ]
+    },
+    {
+      "id": "hyb02",
+      "query": "What share of students are active, and what rights do parents have to appeal an evaluation decision?",
+      "type": "hybrid",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "initial evaluation",
+      "expected_answer": "62",
+      "answer_must_contain": [
+        "62",
+        "appeal"
+      ],
+      "relevant_chunk_ids": [
+        "38",
+        "39",
+        "43",
+        "44"
+      ]
+    },
+    {
+      "id": "hyb03",
+      "query": "How many students completed the program, and what consent is needed before an evaluation?",
+      "type": "hybrid",
+      "expected_source": "isbe_consent_forms_instructions.pdf",
+      "relevant_phrase": "written consent",
+      "expected_answer": "70",
+      "answer_must_contain": [
+        "70",
+        "consent"
+      ],
+      "relevant_chunk_ids": [
+        "359",
+        "361",
+        "365",
+        "386",
+        "416"
+      ]
+    },
+    {
+      "id": "hyb04",
+      "query": "How many students are inactive, and which federal regulations govern special education complaints?",
+      "type": "hybrid",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "34 CFR 300.151",
+      "expected_answer": "44",
+      "answer_must_contain": [
+        "44",
+        "34 CFR"
+      ],
+      "relevant_chunk_ids": [
+        "179"
+      ]
+    },
+    {
+      "id": "oos01",
+      "query": "What is the average SAT score of students in the dataset?",
+      "type": "out_of_scope",
+      "answer_must_contain": [],
+      "note": "No SAT column exists. A correct answer states the data does not contain this."
+    },
+    {
+      "id": "oos02",
+      "query": "What is the district policy on summer transportation funding?",
+      "type": "out_of_scope",
+      "answer_must_contain": [],
+      "note": "Not covered by the loaded documents. A correct answer says it cannot be found."
+    }
+  ]
+}
