@@ -299,6 +299,54 @@
       "type": "out_of_scope",
       "answer_must_contain": [],
       "note": "Not covered by the loaded documents. A correct answer says it cannot be found."
+    },
+    {
+      "id": "kw01",
+      "query": "What does Section 226.570 cover?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "226.570",
+      "answer_must_contain": [
+        "complaint"
+      ],
+      "relevant_chunk_ids": [
+        "4",
+        "5",
+        "54",
+        "55",
+        "179",
+        "182",
+        "186"
+      ]
+    },
+    {
+      "id": "kw02",
+      "query": "What is defined under 34 CFR 300.8?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "34 CFR 300.8",
+      "answer_must_contain": [],
+      "relevant_chunk_ids": [
+        "29",
+        "30",
+        "57",
+        "59"
+      ]
+    },
+    {
+      "id": "kw03",
+      "query": "What is the stay-put placement rule?",
+      "type": "document",
+      "expected_source": "isbe_special_ed_admin_code_226.pdf",
+      "relevant_phrase": "stay-put",
+      "answer_must_contain": [
+        "placement"
+      ],
+      "relevant_chunk_ids": [
+        "177",
+        "178",
+        "179"
+      ]
     }
   ]
 }
