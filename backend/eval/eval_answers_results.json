@@ -1,0 +1,223 @@
+[
+  {
+    "id": "doc01",
+    "type": "document",
+    "query": "How does a parent file a state complaint about special education?",
+    "answer": "To file a state complaint about special education, a parent or individual must follow specific procedures as outlined by the State Board of Education. According to the document \"isbe_special_ed_admin_code_226.pdf\":\n\n1. **Submission of Complaint**: A signed, written complaint can be filed with the State Board of Education, alleging that a local school district or cooperative service unit has violated the rights of one or more children with disabilities.\n\n2. **Content of the Complaint**: The complaint must include:\n   - A statement alleging that a public entity has violated requirements of the Individuals with Disabilities Education Act (IDEA) or related regulations.\n   - The facts supporting this statement.\n   - The signature and contact information of the complainant.\n   - The names and addresses of the students involved (if known), along with their schools.\n   - A description of the nature of the problem concerning the child, including relevant facts.\n   - A proposed resolution of the problem, if known.\n\nThis information is specifically found in Section 226.570 of the document.",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "Every claim about the complaint filing process is supported by the context provided."
+  },
+  {
+    "id": "doc02",
+    "type": "document",
+    "query": "What must a written special education complaint include?",
+    "answer": "A written special education complaint must include the following elements, as outlined in the Illinois Administrative Code (ISBE 23 Illinois Administrative Code 226):\n\n1. A statement that a responsible public entity has violated a requirement of Part B of the IDEA (Individuals with Disabilities Education Act), Title 34 of the Code of Federal Regulations, Article 14 of the Code, or this Part.\n2. The facts on which the statement is based.\n3. The signature and contact information for the complainant.\n4. The names and addresses of the students involved (and the names of the schools of attendance), if known.\n5. A description of the nature of the problem of the child, including the facts relating to the problem.\n6. A proposed resolution of the problem to the extent known and available to the party at the time the complaint is filed.\n\n(Source: isbe_special_ed_admin_code_226.pdf)",
+    "correct": false,
+    "faithfulness": "partial",
+    "faith_reason": "The answer includes elements not explicitly listed in the context, such as a description of the nature of the problem and a proposed resolution."
+  },
+  {
+    "id": "doc03",
+    "type": "document",
+    "query": "Which federal regulations govern the state complaint process?",
+    "answer": "The federal regulations governing the state complaint process are outlined in the Individuals with Disabilities Education Act (IDEA) and specifically in the Code of Federal Regulations (CFR). The relevant sections include:\n\n- **34 CFR 300.151**: This section details the overall procedures for resolving complaints related to violations of rights of children with disabilities.\n- **34 CFR 300.152**: This section addresses specifically the complaint management process and requirements.\n- **34 CFR 300.153**: This section further expands on the responsibilities of state education agencies in response to complaints.\n\nThese regulations require states to establish written complaint procedures, which include the opportunity for an independent investigation, the chance for complainants to provide additional information, and the issuance of a written decision regarding the complaint (source: \"isbe_special_ed_admin_code_226.pdf\").",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about the federal regulations and their requirements for the state complaint process are supported by the context."
+  },
+  {
+    "id": "doc04",
+    "type": "document",
+    "query": "Who can file a special education complaint?",
+    "answer": "A special education complaint can be filed by a parent, individual, or organization. The complaint must be signed and written and submitted to the State Board of Education, alleging that a local school district, cooperative service unit, or the State has violated the rights of one or more children with disabilities. \n\nThis information is sourced from the *Illinois Administrative Code 226* (specifically from chunks 179 and 570 of the document).",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about the filing of a special education complaint and its requirements are supported by the context."
+  },
+  {
+    "id": "doc05",
+    "type": "document",
+    "query": "What is the role of an impartial due process hearing?",
+    "answer": "The role of an impartial due process hearing is to provide a fair and unbiased platform for resolving disputes regarding special education services. According to the Illinois Administrative Code (ISBE 23 Illinois Administrative Code 226), several key aspects define this role:\n\n1. **Decisions by Qualified Officers**: Impartial due process hearing officers must have relevant experience (at least three years in special education, disability-related issues, or advocacy) and adhere to specific qualifications as outlined in federal regulations (34 CFR 300.511). This ensures that the hearing officer is equipped to handle cases effectively.\n\n2. **Fairness and Impartiality**: The hearing process is designed to be unbiased, allowing parties involved\u2014such as parents and school officials\u2014to present their cases without preconceived notions affecting the outcome.\n\n3. **Procedural Framework**: The process includes formal procedures such as scheduling the hearing, conducting pre-hearing conferences, and making decisions that are documented and can be monitored or enforced.\n\n4. **Rights of the Parties**: The hearing process provides certain rights to both parties, including the right to representation and the ability to present evidence and witnesses.\n\nThis framework aims to protect the rights of students with disabilities and ensure that they receive appropriate educational opportunities as mandated by law.\n\n(Source: isbe_special_ed_admin_code_226.pdf)",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "Every claim made in the answer is supported by the context provided."
+  },
+  {
+    "id": "doc06",
+    "type": "document",
+    "query": "What rights do parents have if a district fails to evaluate a child?",
+    "answer": "If a district fails to evaluate a child as required, parents have specific rights. According to the Illinois State Board of Education's guidelines, parents may:\n\n1. **Appeal the Failure**: Parents can appeal the district's failure to conduct the evaluation in an impartial due process hearing. This allows parents to present their case regarding the lack of evaluation.\n   \n2. **Request State Complaint Procedures**: Alternatively, parents can request consideration of this failure through the State complaint procedures, which are also outlined in the regulations.\n\nThese provisions are detailed in the document \"isbe_special_ed_admin_code_226.pdf\" (source).\n\nIf you need more information or have further questions, feel free to ask!",
+    "correct": true,
+    "faithfulness": "unsupported",
+    "faith_reason": "The context does not mention the right to appeal or request state complaint procedures."
+  },
+  {
+    "id": "doc07",
+    "type": "document",
+    "query": "What does IDEA stand for in special education law?",
+    "answer": "IDEA stands for the Individuals with Disabilities Education Improvement Act. This act outlines the requirements for the treatment of children and the provision of special education and related services. The reference can be found in the source \"isbe_special_ed_admin_code_226.pdf.\"",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "The answer accurately describes IDEA and its purpose as outlined in the context."
+  },
+  {
+    "id": "doc08",
+    "type": "document",
+    "query": "What consent is required before a special education evaluation?",
+    "answer": "Before a special education evaluation, parental consent is required. However, it's important to note that this consent for the initial evaluation does not imply consent for the initial provision of special education and related services.\n\nAdditionally, if the child is a ward of the state and not residing with the parent, the public agency is not required to obtain informed consent for the evaluation under specific circumstances, such as when the parent's whereabouts cannot be determined despite reasonable efforts, or the parent's rights have been terminated according to state law.\n\nThis information is sourced from the document \"isbe_consent_forms_instructions.pdf.\"",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about parental consent and the conditions for waiving it are supported by the context."
+  },
+  {
+    "id": "data01",
+    "type": "data",
+    "query": "How many students are active?",
+    "answer": "There are 186 active students, which accounts for 62% of the total student enrollment.",
+    "correct": true
+  },
+  {
+    "id": "data02",
+    "type": "data",
+    "query": "How many students are inactive?",
+    "answer": "There are currently no inactive students in the dataset; 0 out of 300 students have an \"Inactive\" status.",
+    "correct": false
+  },
+  {
+    "id": "data03",
+    "type": "data",
+    "query": "How many students have completed the program?",
+    "answer": "A total of 70 students have completed the program, which is approximately 23.33% of all students enrolled.",
+    "correct": true
+  },
+  {
+    "id": "data04",
+    "type": "data",
+    "query": "How many students are enrolled in total?",
+    "answer": "There are a total of 300 students enrolled.",
+    "correct": true
+  },
+  {
+    "id": "data05",
+    "type": "data",
+    "query": "How many students are in the ELEVATE program?",
+    "answer": "There are 133 students in the ELEVATE program, which accounts for approximately 44.33% of the total student enrollment.",
+    "correct": true
+  },
+  {
+    "id": "data06",
+    "type": "data",
+    "query": "How many students are in the IMPACT program?",
+    "answer": "There are 167 students in the IMPACT program, which accounts for approximately 55.67% of the total student enrollment.",
+    "correct": true
+  },
+  {
+    "id": "data07",
+    "type": "data",
+    "query": "What percentage of students are active?",
+    "answer": "62% of students are classified as active.",
+    "correct": true
+  },
+  {
+    "id": "data08",
+    "type": "data",
+    "query": "What percentage of students are in the ELEVATE program?",
+    "answer": "Approximately 44.33% of students are in the ELEVATE program.",
+    "correct": true
+  },
+  {
+    "id": "data09",
+    "type": "data",
+    "query": "How many students enrolled before June 2025 versus on or after?",
+    "answer": "There are 201 students who enrolled before June 2025, and 99 students who enrolled on or after.",
+    "correct": true
+  },
+  {
+    "id": "data10",
+    "type": "data",
+    "query": "How many students are in grade 12?",
+    "answer": "There are 66 students in grade 12, which represents 22% of the total student enrollment.",
+    "correct": true
+  },
+  {
+    "id": "hyb01",
+    "type": "hybrid",
+    "query": "How many students are in ELEVATE, and what is the process for filing a state complaint?",
+    "answer": "There are **133 students** enrolled in the ELEVATE program, which accounts for approximately **44.33%** of the total student enrollment.\n\nRegarding the process for filing a state complaint, the procedure is outlined in the document titled \"ISBE 23 ILLINOIS ADMINISTRATIVE CODE 226.\" Here are the key points:\n\n1. A signed, written complaint can be filed with the State Board of Education by a parent, individual, or organization alleging violations of rights concerning children with disabilities.\n  \n2. Within 60 days of receiving the complaint, the State Board of Education will investigate the allegations. They may:\n   - Conduct an independent on-site investigation if deemed necessary.\n   - Allow the complainant to submit additional information about the complaint.\n\n3. The entity being complained against must respond in writing, including any corrective actions, within a stipulated time frame that does not exceed 45 days.\n\n4. Complaints must be filed within one year of the alleged violation.\n\nThis process ensures that complaints are addressed within a specified timeline while allowing for further information and responses from all parties involved.",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about the ELEVATE program enrollment and the state complaint process are supported by the context."
+  },
+  {
+    "id": "hyb02",
+    "type": "hybrid",
+    "query": "What share of students are active, and what rights do parents have to appeal an evaluation decision?",
+    "answer": "**Share of Active Students:**\n62% of the students are currently active. This is based on 186 active students out of a total of 300 students.\n\n**Parents' Rights to Appeal Evaluation Decisions:**\nAccording to the guidelines provided in the document \"isbe_consent_forms_instructions.pdf,\" parents have several rights regarding appeal processes related to evaluation decisions:\n\n1. Parents can obtain an independent evaluation of their child at their own expense if they believe the evaluation conducted by the district does not adequately represent their child's needs (as outlined in the special education regulations).\n2. They have the right to access the district's list of independent evaluators.\n3. Parents may request delays in hearings if they believe the acquisition of an independent evaluation will cause a delay.\n4. The rights of the parents during hearings conform to specific federal and state regulations, allowing them to challenge evaluation decisions.\n\nThis information confirms that parents have avenues for seeking independent evaluations and appealing decisions they disagree with.",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about the share of active students and parents' rights to appeal evaluation decisions are supported by the context."
+  },
+  {
+    "id": "hyb03",
+    "type": "hybrid",
+    "query": "How many students completed the program, and what consent is needed before an evaluation?",
+    "answer": "I could not find the number of students who completed the program in the dataset, as it appears there are no enrolled students to provide a denominator for that calculation. \n\nRegarding the consent needed before an evaluation, the following is required:\n\n1. **Initial Evaluation**: Informed consent must be obtained from the parent before conducting an initial evaluation (as per ISBE regulations). This process must align with the completion of the Parent/Guardian Identification of Needed Assessments form (34-57B/C).\n\n2. **Reevaluation**: Similarly, consent is required to conduct a reevaluation. The appropriate forms (34-57B or 34-57C, depending on the context) need to be used for obtaining consent (as mentioned in the ISBE consent forms instructions).\n\nThis information is sourced from the document \"isbe_consent_forms_instructions.pdf\".",
+    "correct": false,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about the need for consent for initial evaluations and reevaluations are supported by the context."
+  },
+  {
+    "id": "hyb04",
+    "type": "hybrid",
+    "query": "How many students are inactive, and which federal regulations govern special education complaints?",
+    "answer": "There are **44 inactive students**, which accounts for approximately **14.67%** of the total student enrollment.\n\nRegarding the federal regulations governing special education complaints, they are outlined in the Illinois Administrative Code. Here are some key points related to these regulations:\n\n1. **Filing Complaints**: A parent, individual, or organization can file a signed, written complaint with the State Board of Education if they believe there has been a violation of rights regarding children with disabilities. This is in accordance with **34 CFR 300.151, 300.152, and 300.153** (Source: *isbe_special_ed_admin_code_226.pdf*).\n\n2. **Requirements for Complaints**: The complaints must include details such as a statement of violation, supporting facts, contact information of the complainant, and a description of the problem related to the child.\n\n3. **Resolution Procedures**: The regulations also outline procedures for how complaints should be addressed, including timelines for investigation and resolution (Source: *isbe_special_ed_admin_code_226.pdf*).\n\nIf you need more detailed aspects of the regulations or procedures, feel free to ask!",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about inactive students and special education complaint procedures are supported by the context."
+  },
+  {
+    "id": "oos01",
+    "type": "out_of_scope",
+    "query": "What is the average SAT score of students in the dataset?",
+    "answer": "I could not find this in the available documents or data. The dataset does not include SAT scores, so I cannot provide an average.",
+    "oos_appropriate": true,
+    "oos_reason": "The assistant correctly stated that the information was not available instead of fabricating an answer."
+  },
+  {
+    "id": "oos02",
+    "type": "out_of_scope",
+    "query": "What is the district policy on summer transportation funding?",
+    "answer": "The district policy on summer transportation funding is not explicitly stated in the retrieved documents. However, there are provisions regarding special transportation for eligible students, particularly for those with disabilities. The relevant sections from the \"isbe_special_ed_admin_code_226.pdf\" document outline requirements for transportation arrangements, ensuring reasonable notice to parents, and accommodating the specific needs of students.\n\nWhile these policies provide a framework for special education transportation, there is no direct reference to summer transportation funding in the retrieved content. I am unable to find more specific information regarding summer transportation funding in the available documents.",
+    "oos_appropriate": true,
+    "oos_reason": "The assistant clearly stated the lack of specific information on summer transportation funding without fabricating an answer."
+  },
+  {
+    "id": "kw01",
+    "type": "document",
+    "query": "What does Section 226.570 cover?",
+    "answer": "Section 226.570 of the Illinois Administrative Code addresses the State Complaint Procedures. It outlines the written complaint procedures established by the State Board of Education, as mandated by federal regulations (34 CFR 300.151, 300.152, and 300.153) and Section 14-8.02e of the Code. This section allows a parent, individual, or organization to submit a signed, written complaint to the State Board of Education if they believe that a local school district, cooperative service unit, or the State has violated the rights of one or more children with disabilities. \n\nThis information was retrieved from the document \"isbe_special_ed_admin_code_226.pdf\".",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about Section 226.570 and the State Complaint Procedures are supported by the context."
+  },
+  {
+    "id": "kw02",
+    "type": "document",
+    "query": "What is defined under 34 CFR 300.8?",
+    "answer": "The references to 34 CFR 300.8 in the retrieved documents indicate that it describes definitions related to children with disabilities, including types of disabilities like specific learning disabilities, autism, and others. For instance, 34 CFR 300.8 specifically mentions definitions for conditions such as speech or language impairment, traumatic brain injury, and visual impairment. \n\nOne document notes that \"learning disability, speech or language impairment, traumatic brain injury, and visual impairment\" will be defined as set forth in 34 CFR 300.8(c). This regulation establishes the criteria for identifying children with such special needs, including how these conditions must be documented and evaluated in the context of special education.\n\nFor more detailed and specific definitions, consulting the actual text of 34 CFR 300.8 is recommended, as the documents reference only portions of it. The specific source of this information is the \"isbe_special_ed_admin_code_226.pdf.\"",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about 34 CFR 300.8 and its definitions of disabilities are supported by the context."
+  },
+  {
+    "id": "kw03",
+    "type": "document",
+    "query": "What is the stay-put placement rule?",
+    "answer": "The \"stay-put placement rule\" refers to a provision in special education that mandates a student must remain in their current educational placement during disputes regarding changes to their placement. According to the Illinois Administrative Code (source: isbe_special_ed_admin_code_226.pdf), the stay-put placement shall be the last placement agreed upon by the parties if a notice of proposed change in placement is issued. \n\nIf mediation fails to resolve the dispute, the parent (or the student if they are 18 years of age or older) has 10 days after the mediation concludes to file a request for a due process hearing to continue invoking the stay-put provisions. This ensures that a student's educational stability is maintained while conflicts about their placement are being addressed.",
+    "correct": true,
+    "faithfulness": "grounded",
+    "faith_reason": "All claims about the stay-put placement rule and the process following mediation are supported by the context."
+  }
+]

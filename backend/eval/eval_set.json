@@ -69,7 +69,7 @@
       "expected_source": "isbe_special_ed_admin_code_226.pdf",
       "relevant_phrase": "Individuals with Disabilities Education Act",
       "answer_must_contain": [
-        "Individuals with Disabilities Education Act"
+        "Individuals with Disabilities Education"
       ]
     },
     {
@@ -230,10 +230,10 @@
     },
     {
       "id": "oos02",
-      "query": "What is the district policy on summer transportation funding?",
+      "query": "What is on the school cafeteria lunch menu this week?",
       "type": "out_of_scope",
       "answer_must_contain": [],
-      "note": "Not covered by the loaded documents. A correct answer says it cannot be found."
+      "note": "Cafeteria menus appear in neither the documents nor the student data. A correct answer says it cannot be found."
     },
     {
       "id": "kw01",

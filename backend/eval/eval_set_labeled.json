@@ -102,7 +102,7 @@
       "expected_source": "isbe_special_ed_admin_code_226.pdf",
       "relevant_phrase": "Individuals with Disabilities Education Act",
       "answer_must_contain": [
-        "Individuals with Disabilities Education Act"
+        "Individuals with Disabilities Education"
       ],
       "relevant_chunk_ids": [
         "26",

@@ -155,8 +155,14 @@ def _build_system_prompt(datasets: list[dict]) -> str:
         f"- Use search_documents for policy, eligibility, rules, or procedure questions.\n"
         f"- Use the data tools for counts, averages, trends, ratios, outliers, or period comparisons.\n"
         f"- A question may need both. Call the tools you need, then answer.\n"
-        f"- Ground your answer in tool results. When you use a document, name the source file.\n"
-        f"- If the tools do not contain the answer, say so plainly instead of guessing."
+        f"- Ground your answer only in tool results. When you use a document, name the source file.\n"
+        f"- Before answering, check that the retrieved content actually addresses the "
+        f"question. Retrieval always returns the closest chunks even when none are "
+        f"relevant, so matching keywords are not the same as a real answer.\n"
+        f"- If the tools do not contain information that directly answers the question, "
+        f"say plainly that you could not find it in the available documents or data. "
+        f"Do not infer, generalize, or fill gaps from outside knowledge. A clear "
+        f"\"I could not find this\" is correct and expected; a fabricated answer is a failure."
     )
 
 
