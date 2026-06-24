@@ -149,3 +149,66 @@ body {
 .cursor { display: inline-block; width: 2px; height: 1.05em; background: var(--green); margin-left: 2px; vertical-align: -2px; animation: blink 1s steps(2) infinite; }
 @keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; opacity: 0.6; } }
+
+/* ===== evaluation dashboard ===== */
+.dash-scroll { flex: 1; overflow-y: auto; background: var(--cream); }
+.dash-center { max-width: 880px; margin: 0 auto; padding: 28px 28px 60px; }
+
+.dash-head { margin-bottom: 26px; }
+.dash-title { font-family: var(--font-serif), Georgia, serif; font-size: 1.9rem; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 0.5rem; color: var(--ink); }
+.dash-lead { color: var(--ink-2); font-size: 0.96rem; line-height: 1.6; max-width: 640px; margin: 0; }
+
+.dash-error { background: var(--terra-soft); border: 1px solid var(--terra); color: #8a4a22; border-radius: var(--radius); padding: 16px 18px; font-size: 0.9rem; line-height: 1.5; }
+.dash-loading { color: var(--ink-2); font-size: 0.92rem; padding: 30px 0; }
+
+.dash-section { margin-bottom: 30px; }
+.section-label { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 10px; }
+
+.panel-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+.section-note { color: var(--ink-2); font-size: 0.86rem; line-height: 1.55; margin: 0 0 16px; max-width: 620px; }
+.section-note.insight { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); color: var(--ink); }
+
+/* toggles */
+.toggle-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; margin-bottom: 6px; }
+.toggle-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.toggle { font-family: var(--font-sans), system-ui, sans-serif; font-size: 0.78rem; color: var(--ink-2); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; cursor: pointer; transition: all 0.15s; }
+.toggle:hover { border-color: var(--terra); }
+.toggle.on { background: var(--green); border-color: var(--green); color: var(--cream); }
+
+/* legends */
+.legend-row { display: flex; gap: 16px; align-items: center; margin-top: 12px; font-size: 0.8rem; color: var(--ink-2); flex-wrap: wrap; }
+.legend-row i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.legend-n { margin-left: auto; }
+
+/* metric cards */
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.metric { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+.metric-label { font-size: 0.78rem; color: var(--ink-2); margin-bottom: 6px; }
+.metric-value { font-family: var(--font-serif), Georgia, serif; font-size: 1.9rem; font-weight: 600; color: var(--green); line-height: 1; }
+.metric-sub { font-size: 0.76rem; color: var(--ink-2); margin-top: 7px; line-height: 1.45; }
+
+/* horizontal bars (correctness by type) */
+.bars { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: flex; align-items: center; gap: 12px; }
+.bar-label { font-size: 0.85rem; color: var(--ink); width: 84px; text-transform: capitalize; flex-shrink: 0; }
+.bar-track { flex: 1; height: 10px; background: var(--green-soft); border-radius: 999px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--green); border-radius: 999px; }
+.bar-val { font-size: 0.82rem; color: var(--ink); font-variant-numeric: tabular-nums; width: 96px; text-align: right; flex-shrink: 0; }
+.bar-frac { color: var(--ink-2); }
+
+/* faithfulness stacked bar */
+.faith-bar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: var(--green-soft); }
+.faith-seg { height: 100%; }
+.faith-legend { display: flex; gap: 16px; margin-top: 10px; font-size: 0.8rem; color: var(--ink-2); flex-wrap: wrap; }
+.faith-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+.dash-footer { color: var(--ink-2); font-size: 0.8rem; line-height: 1.5; border-top: 1px solid var(--line); padding-top: 16px; margin-top: 6px; }
+
+/* top bar nav link (shared) */
+.navlink { font-size: 0.82rem; color: var(--green); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px; }
+.navlink:hover { background: var(--green-soft); border-color: var(--green); }
+
+@media (max-width: 700px) {
+  .dash-center { padding: 20px 16px 48px; }
+  .toggle-row { flex-direction: column; gap: 8px; }
+}

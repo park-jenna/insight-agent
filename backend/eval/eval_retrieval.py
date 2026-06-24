@@ -160,6 +160,27 @@ async def main():
     print("- keyword-only is competitive or wins on exact-term queries")
     print("- hybrid stays at or near the top of BOTH, which is the point of fusing them")
 
+    def pack(bucket, n):
+        return {"n": n, "modes": {
+            mode: {
+                "p": round(avg(bucket[mode]["p"]), 3),
+                "r": round(avg(bucket[mode]["r"]), 3),
+                "mrr": round(avg(bucket[mode]["rr"]), 3),
+                "hit": round(avg(bucket[mode]["hit"]), 3),
+            } for mode in MODES
+        }}
+
+    out = {
+        "top_k": TOP_K,
+        "overall": pack(overall, len(queries)),
+        "by_style": {
+            "natural-language": pack(groups["natural-language"], counts["natural-language"]),
+            "exact-term": pack(groups["exact-term"], counts["exact-term"]),
+        },
+    }
+    (HERE / "eval_retrieval_results.json").write_text(json.dumps(out, indent=2))
+    print("\nWrote eval_retrieval_results.json")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

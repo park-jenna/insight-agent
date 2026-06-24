@@ -1,0 +1,74 @@
+{
+  "top_k": 5,
+  "overall": {
+    "n": 15,
+    "modes": {
+      "keyword-only": {
+        "p": 0.124,
+        "r": 0.073,
+        "mrr": 0.15,
+        "hit": 0.2
+      },
+      "vector-only": {
+        "p": 0.213,
+        "r": 0.378,
+        "mrr": 0.541,
+        "hit": 0.733
+      },
+      "hybrid (RRF)": {
+        "p": 0.253,
+        "r": 0.425,
+        "mrr": 0.589,
+        "hit": 0.733
+      }
+    }
+  },
+  "by_style": {
+    "natural-language": {
+      "n": 12,
+      "modes": {
+        "keyword-only": {
+          "p": 0.072,
+          "r": 0.05,
+          "mrr": 0.104,
+          "hit": 0.167
+        },
+        "vector-only": {
+          "p": 0.2,
+          "r": 0.385,
+          "mrr": 0.482,
+          "hit": 0.667
+        },
+        "hybrid (RRF)": {
+          "p": 0.217,
+          "r": 0.401,
+          "mrr": 0.486,
+          "hit": 0.667
+        }
+      }
+    },
+    "exact-term": {
+      "n": 3,
+      "modes": {
+        "keyword-only": {
+          "p": 0.333,
+          "r": 0.167,
+          "mrr": 0.333,
+          "hit": 0.333
+        },
+        "vector-only": {
+          "p": 0.267,
+          "r": 0.353,
+          "mrr": 0.778,
+          "hit": 1.0
+        },
+        "hybrid (RRF)": {
+          "p": 0.4,
+          "r": 0.52,
+          "mrr": 1.0,
+          "hit": 1.0
+        }
+      }
+    }
+  }
+}

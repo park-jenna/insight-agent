@@ -1,15 +1,14 @@
 """
 InsightAgent backend entry point.
 
-Step 1: a minimal server with a health check route.
-We add the database and ingestion in the next steps.
+Registers routers and manages the database pool lifecycle.
 """
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import init_pool, close_pool
-from app.routers import datasets, documents, search, agent
+from app.routers import datasets, documents, search, agent, evaluation
 
 app = FastAPI(title="InsightAgent API")
 
@@ -25,6 +24,7 @@ app.include_router(datasets.router)
 app.include_router(documents.router)
 app.include_router(search.router)
 app.include_router(agent.router)
+app.include_router(evaluation.router)
 
 
 @app.on_event("startup")

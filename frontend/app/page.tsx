@@ -257,6 +257,7 @@ export default function Home() {
         <span className="divider" />
         <span className="assistant-label">ChiEAC Assistant</span>
         <span className="spacer" />
+        <a className="navlink" href="/dashboard">Evaluation</a>
         {messages.length > 0 && (
           <button className="newchat" onClick={reset}>New conversation</button>
         )}
