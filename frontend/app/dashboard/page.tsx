@@ -64,11 +64,11 @@ function RetrievalChart({ bucket, metric }: { bucket: Bucket; metric: keyof Mode
         <Tooltip
           cursor={{ fill: "rgba(0,0,0,0.03)" }}
           contentStyle={{ background: "#fffdf8", border: `1px solid ${LINE}`, borderRadius: 10, fontSize: 13 }}
-          formatter={(v: number) => [v.toFixed(3), metric.toUpperCase()]}
+          formatter={(v) => [typeof v === "number" ? v.toFixed(3) : v, metric.toUpperCase()]}
         />
         <Bar dataKey="value" radius={[5, 5, 0, 0]}>
           {data.map((d) => <Cell key={d.fullMode} fill={MODE_COLOR[d.fullMode] || INK2} />)}
-          <LabelList dataKey="value" position="top" formatter={(v: number) => v.toFixed(2)} style={{ fontSize: 11, fill: INK2 }} />
+          <LabelList dataKey="value" position="top" formatter={(v: number | string | undefined) => typeof v === "number" ? v.toFixed(2) : v} style={{ fontSize: 11, fill: INK2 }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -90,13 +90,13 @@ function LatencyChart({ latency }: { latency: Latency }) {
         <Tooltip
           cursor={{ fill: "rgba(0,0,0,0.03)" }}
           contentStyle={{ background: "#fffdf8", border: `1px solid ${LINE}`, borderRadius: 10, fontSize: 13 }}
-          formatter={(v: number, name: string) => [`${v} ms`, name === "mean" ? "Mean" : "p95"]}
+          formatter={(v, name) => [`${typeof v === "number" ? v : String(v)} ms`, name === "mean" ? "Mean" : "p95"]}
         />
         <Bar dataKey="mean" fill={GREEN} radius={[5, 5, 0, 0]}>
-          <LabelList dataKey="mean" position="top" formatter={(v: number) => `${v}`} style={{ fontSize: 11, fill: INK2 }} />
+          <LabelList dataKey="mean" position="top" formatter={(v: number | string | undefined) => `${v ?? ""}`} style={{ fontSize: 11, fill: INK2 }} />
         </Bar>
         <Bar dataKey="p95" fill={TERRA} radius={[5, 5, 0, 0]}>
-          <LabelList dataKey="p95" position="top" formatter={(v: number) => `${v}`} style={{ fontSize: 11, fill: INK2 }} />
+          <LabelList dataKey="p95" position="top" formatter={(v: number | string | undefined) => `${v ?? ""}`} style={{ fontSize: 11, fill: INK2 }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
