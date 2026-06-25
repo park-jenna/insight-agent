@@ -4,6 +4,8 @@ InsightAgent backend entry point.
 Registers routers and manages the database pool lifecycle.
 """
 
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,10 +14,16 @@ from app.routers import datasets, documents, search, agent, evaluation
 
 app = FastAPI(title="InsightAgent API")
 
-# allow the Next.js frontend (added later) to call this during local dev
+# Local dev always allowed. Deployed frontend origins come from FRONTEND_ORIGINS,
+# a comma separated list set in the hosting environment.
+_origins = ["http://localhost:3000"]
+_extra = os.getenv("FRONTEND_ORIGINS", "")
+if _extra:
+    _origins += [o.strip() for o in _extra.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
