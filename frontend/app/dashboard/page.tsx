@@ -68,7 +68,7 @@ function RetrievalChart({ bucket, metric }: { bucket: Bucket; metric: keyof Mode
         />
         <Bar dataKey="value" radius={[5, 5, 0, 0]}>
           {data.map((d) => <Cell key={d.fullMode} fill={MODE_COLOR[d.fullMode] || INK2} />)}
-          <LabelList dataKey="value" position="top" formatter={(v: number | string | undefined) => typeof v === "number" ? v.toFixed(2) : v} style={{ fontSize: 11, fill: INK2 }} />
+          <LabelList dataKey="value" position="top" formatter={(v) => typeof v === "number" ? v.toFixed(2) : v} style={{ fontSize: 11, fill: INK2 }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -93,10 +93,10 @@ function LatencyChart({ latency }: { latency: Latency }) {
           formatter={(v, name) => [`${typeof v === "number" ? v : String(v)} ms`, name === "mean" ? "Mean" : "p95"]}
         />
         <Bar dataKey="mean" fill={GREEN} radius={[5, 5, 0, 0]}>
-          <LabelList dataKey="mean" position="top" formatter={(v: number | string | undefined) => `${v ?? ""}`} style={{ fontSize: 11, fill: INK2 }} />
+          <LabelList dataKey="mean" position="top" formatter={(v) => `${v ?? ""}`} style={{ fontSize: 11, fill: INK2 }} />
         </Bar>
         <Bar dataKey="p95" fill={TERRA} radius={[5, 5, 0, 0]}>
-          <LabelList dataKey="p95" position="top" formatter={(v: number | string | undefined) => `${v ?? ""}`} style={{ fontSize: 11, fill: INK2 }} />
+          <LabelList dataKey="p95" position="top" formatter={(v) => `${v ?? ""}`} style={{ fontSize: 11, fill: INK2 }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
