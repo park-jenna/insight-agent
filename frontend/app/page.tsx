@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { apiBase } from "@/lib/api";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API = apiBase();
 
 type TraceStep = { tool: string; args: Record<string, any>; result?: any; ms?: number };
 type Source = { filename: string; type: string; passages: number };
