@@ -130,8 +130,10 @@ export default function Dashboard() {
   return (
     <main className="app">
       <header className="topbar">
-        <div className="logo">iA</div>
-        <span className="wordmark">InsightAgent</span>
+        <Link className="brand-link" href="/" aria-label="Go to InsightAgent home">
+          <div className="logo">iA</div>
+          <span className="wordmark">InsightAgent</span>
+        </Link>
         <span className="divider" />
         <span className="assistant-label">Evaluation</span>
         <span className="spacer" />
