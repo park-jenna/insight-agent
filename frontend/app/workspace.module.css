@@ -161,8 +161,8 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px 14px;
+  gap: 12px;
+  padding: 14px 12px;
 }
 
 .panel {
@@ -203,9 +203,23 @@
   padding: 15px;
 }
 
+.sourceSidebar .panel {
+  background: rgba(255, 253, 248, 0.82);
+  box-shadow: none;
+}
+
+.sourceSidebar .panelHead {
+  min-height: 42px;
+  padding: 11px 13px;
+}
+
+.sourceSidebar .panelBody {
+  padding: 12px;
+}
+
 .sourceSection + .sourceSection {
-  margin-top: 13px;
-  padding-top: 13px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-top: 1px solid var(--workspace-line-soft);
 }
 
@@ -213,7 +227,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 9px;
+  margin-bottom: 7px;
   color: var(--workspace-quiet);
   font-size: 10.5px;
   font-weight: var(--weight-semibold);
@@ -232,7 +246,7 @@
 
 .sourceList {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .sourceRow {
@@ -240,7 +254,7 @@
   grid-template-columns: 18px minmax(0, 1fr) auto;
   align-items: start;
   gap: 7px;
-  padding: 10px 11px;
+  padding: 8px 9px;
   border: 1px solid var(--workspace-line-soft);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.42);
