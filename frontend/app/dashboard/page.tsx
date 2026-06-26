@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   Cell, LabelList,
@@ -134,7 +135,7 @@ export default function Dashboard() {
         <span className="divider" />
         <span className="assistant-label">Evaluation</span>
         <span className="spacer" />
-        <a className="navlink" href="/">Assistant</a>
+        <Link className="navlink" href="/">Assistant</Link>
       </header>
 
       <div className="dash-scroll">
