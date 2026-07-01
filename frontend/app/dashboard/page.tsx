@@ -138,6 +138,7 @@ export default function Dashboard() {
         <span className="assistant-label">Evaluation</span>
         <span className="spacer" />
         <Link className="navlink" href="/">Assistant</Link>
+        <Link className="navlink" href="/upload">Upload</Link>
       </header>
 
       <div className="dash-scroll">

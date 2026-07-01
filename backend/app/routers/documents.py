@@ -105,6 +105,28 @@ async def upload_pdf(
     }
 
 
+@router.get("")
+async def list_documents(user: CurrentUser = Depends(get_current_user)):
+    pool = get_pool()
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            "SELECT id, filename, total_chunks, uploaded_at "
+            "FROM documents WHERE user_id = $1 ORDER BY uploaded_at DESC",
+            user.id,
+        )
+    return {
+        "documents": [
+            {
+                "document_id": str(r["id"]),
+                "filename": r["filename"],
+                "total_chunks": r["total_chunks"],
+                "uploaded_at": r["uploaded_at"].isoformat(),
+            }
+            for r in rows
+        ]
+    }
+
+
 @router.get("/{document_id}/chunks")
 async def get_chunks(
     document_id: str,

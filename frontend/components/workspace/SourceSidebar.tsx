@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type {
   WorkspaceFilters,
   WorkspaceSource,
@@ -86,7 +87,12 @@ export function SourceSidebar({
         <section className={styles.panel}>
           <div className={styles.panelHead}>
             <h2 className={styles.panelTitle}>Sources</h2>
-            <span className={styles.panelNote}>{sources.length} loaded</span>
+            <div className={styles.panelHeadActions}>
+              <span className={styles.panelNote}>{sources.length} loaded</span>
+              <Link href="/upload" className={styles.panelLink}>
+                Upload +
+              </Link>
+            </div>
           </div>
           <div className={styles.panelBody}>
             <SourceGroup label="Documents" sources={documents} />

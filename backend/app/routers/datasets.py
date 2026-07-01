@@ -152,6 +152,29 @@ async def upload_csv(
     }
 
 
+@router.get("")
+async def list_datasets(user: CurrentUser = Depends(get_current_user)):
+    pool = get_pool()
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            "SELECT id, name, original_filename, row_count, uploaded_at "
+            "FROM datasets WHERE user_id = $1 ORDER BY uploaded_at DESC",
+            user.id,
+        )
+    return {
+        "datasets": [
+            {
+                "dataset_id": str(r["id"]),
+                "name": r["name"],
+                "original_filename": r["original_filename"],
+                "row_count": r["row_count"],
+                "uploaded_at": r["uploaded_at"].isoformat(),
+            }
+            for r in rows
+        ]
+    }
+
+
 @router.get("/{dataset_id}")
 async def get_dataset(dataset_id: str, user: CurrentUser = Depends(get_current_user)):
     pool = get_pool()

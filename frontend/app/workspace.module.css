@@ -199,6 +199,23 @@
   font-weight: var(--weight-medium);
 }
 
+.panelHeadActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panelLink {
+  color: var(--workspace-rust);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+}
+
+.panelLink:hover {
+  text-decoration: underline;
+}
+
 .panelBody {
   padding: 15px;
 }
