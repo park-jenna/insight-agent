@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState } from "react";
-import { apiBase } from "@/lib/api";
+import { apiBase, apiKeyHeader } from "@/lib/api";
 import type {
   AgentMessage,
   AgentRun,
@@ -138,7 +138,7 @@ export function useAgentStream() {
       try {
         const response = await fetch(`${API}/agent/stream`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...apiKeyHeader() },
           body: JSON.stringify({
             query: trimmed,
             session_id: sessionIdRef.current,

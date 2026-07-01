@@ -43,6 +43,20 @@ CHUNK_CHARS = 500
 
 _judge = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# The eval pipeline runs outside the API, so it has no caller with an
+# API key. It attaches its runs to a dedicated user instead.
+EVAL_USER_EMAIL = "eval@insightagent.local"
+
+
+async def _get_or_create_eval_user(conn) -> str:
+    row = await conn.fetchrow("SELECT id FROM users WHERE email = $1", EVAL_USER_EMAIL)
+    if row:
+        return row["id"]
+    row = await conn.fetchrow(
+        "INSERT INTO users (email) VALUES ($1) RETURNING id", EVAL_USER_EMAIL
+    )
+    return row["id"]
+
 
 FAITH_PROMPT = """You evaluate whether an answer is grounded in the provided context.
 
@@ -92,12 +106,12 @@ def correctness(answer: str, must_contain: list[str]) -> bool:
     return all(term.lower() in low for term in must_contain)
 
 
-async def build_context(conn, tool_trace: list) -> str:
+async def build_context(conn, tool_trace: list, user_id: str) -> str:
     parts = []
     for step in tool_trace:
         if step["tool"] == "search_documents":
             q = step.get("args", {}).get("query", "")
-            chunks = await hybrid_search(conn, q, top_k=5)
+            chunks = await hybrid_search(conn, q, user_id, top_k=5)
             for c in chunks:
                 parts.append(f"[{c['filename']}] {c['content'][:CHUNK_CHARS]}")
         else:
@@ -112,9 +126,10 @@ async def main():
     conn = await asyncpg.connect(os.getenv("DATABASE_URL"))
     records = []
     try:
+        user_id = await _get_or_create_eval_user(conn)
         for i, q in enumerate(queries, 1):
             print(f"[{i}/{len(queries)}] {q['id']}: {q['query'][:55]}...")
-            run = await run_agent(conn, q["query"])  # fresh session each call
+            run = await run_agent(conn, q["query"], user_id)  # fresh session each call
             answer = run["answer"]
 
             rec = {"id": q["id"], "type": q["type"], "query": q["query"], "answer": answer}
@@ -127,7 +142,7 @@ async def main():
                 rec["correct"] = correctness(answer, q.get("answer_must_contain", []))
                 used_docs = any(s["tool"] == "search_documents" for s in run["tool_trace"])
                 if used_docs:
-                    context = await build_context(conn, run["tool_trace"])
+                    context = await build_context(conn, run["tool_trace"], user_id)
                     v = await judge(FAITH_PROMPT.format(context=context, answer=answer))
                     rec["faithfulness"] = v.get("verdict", "unknown")
                     rec["faith_reason"] = v.get("reason", "")

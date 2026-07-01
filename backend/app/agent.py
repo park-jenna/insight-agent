@@ -32,11 +32,14 @@ load_dotenv()
 
 CHAT_MODEL = os.getenv("CHAT_MODEL", "gpt-4o-mini")
 DOMAIN_LABEL = os.getenv("SYSTEM_PROMPT_LABEL", "document and data assistant")
-DEV_USER_EMAIL = "dev@insightagent.local"
 MAX_STEPS = 6
 HISTORY_TURNS = 6
 
 _client: AsyncOpenAI | None = None
+
+
+class SessionNotFound(Exception):
+    """A session_id was given but doesn't exist or belongs to another user."""
 
 
 def _get_client() -> AsyncOpenAI:
@@ -51,26 +54,24 @@ def _get_client() -> AsyncOpenAI:
 
 # ---------- session helpers ----------
 
-async def _get_dev_user(conn):
-    row = await conn.fetchrow("SELECT id FROM users WHERE email = $1", DEV_USER_EMAIL)
-    if row:
-        return row["id"]
-    row = await conn.fetchrow(
-        "INSERT INTO users (email) VALUES ($1) RETURNING id", DEV_USER_EMAIL
-    )
-    return row["id"]
-
-
 async def _resolve_session(conn, session_id, user_id):
     if session_id:
         try:
             uuidlib.UUID(str(session_id))
         except ValueError:
             session_id = None
+
     if session_id:
-        row = await conn.fetchrow("SELECT id FROM sessions WHERE id = $1::uuid", session_id)
+        row = await conn.fetchrow(
+            "SELECT id FROM sessions WHERE id = $1::uuid AND user_id = $2",
+            session_id,
+            user_id,
+        )
         if row:
             return row["id"]
+        # a syntactically valid id that isn't ours, don't silently adopt it
+        raise SessionNotFound(session_id)
+
     row = await conn.fetchrow(
         "INSERT INTO sessions (user_id) VALUES ($1) RETURNING id", user_id
     )
@@ -166,10 +167,9 @@ def _build_system_prompt(datasets: list[dict]) -> str:
     )
 
 
-async def _prepare(conn, query, session_id):
-    user_id = await _get_dev_user(conn)
+async def _prepare(conn, query, session_id, user_id):
     session = await _resolve_session(conn, session_id, user_id)
-    datasets = await available_datasets(conn)
+    datasets = await available_datasets(conn, user_id)
     history = await _load_history(conn, session)
 
     messages = [{"role": "system", "content": _build_system_prompt(datasets)}]
@@ -183,9 +183,9 @@ async def _prepare(conn, query, session_id):
 
 # ---------- non-streaming loop ----------
 
-async def run_agent(conn, query: str, session_id=None) -> dict:
+async def run_agent(conn, query: str, user_id: str, session_id=None) -> dict:
     client = _get_client()
-    session, messages = await _prepare(conn, query, session_id)
+    session, messages = await _prepare(conn, query, session_id, user_id)
 
     tool_trace = []
     start = time.time()
@@ -217,7 +217,7 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
             except json.JSONDecodeError:
                 args = {}
             t0 = time.perf_counter()
-            result = await execute_tool(conn, tc.function.name, args)
+            result = await execute_tool(conn, tc.function.name, args, user_id)
             ms = int((time.perf_counter() - t0) * 1000)
             tool_trace.append({
                 "tool": tc.function.name, "args": args,
@@ -242,7 +242,7 @@ async def run_agent(conn, query: str, session_id=None) -> dict:
 
 # ---------- streaming loop ----------
 
-async def run_agent_stream(conn, query: str, session_id=None):
+async def run_agent_stream(conn, query: str, user_id: str, session_id=None):
     """Async generator yielding (event, data) tuples.
 
     Events: start, token, reset, tool, done, error. Token events carry
@@ -250,7 +250,7 @@ async def run_agent_stream(conn, query: str, session_id=None):
     Done carries the final structured run data.
     """
     client = _get_client()
-    session, messages = await _prepare(conn, query, session_id)
+    session, messages = await _prepare(conn, query, session_id, user_id)
 
     tool_trace = []
     start = time.time()
@@ -306,7 +306,7 @@ async def run_agent_stream(conn, query: str, session_id=None):
                 except json.JSONDecodeError:
                     args = {}
                 t0 = time.perf_counter()
-                result = await execute_tool(conn, c["name"], args)
+                result = await execute_tool(conn, c["name"], args, user_id)
                 ms = int((time.perf_counter() - t0) * 1000)
                 trimmed = _trim_for_client(c["name"], result)
                 tool_trace.append({"tool": c["name"], "args": args, "result": trimmed, "ms": ms})

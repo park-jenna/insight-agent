@@ -95,6 +95,26 @@ python apply_schema.py
 uvicorn app.main:app --reload
 ```
 
+Every route except `/health` requires an API key, sent as an `X-API-Key`
+header. Issue one for yourself (creates the user if the email doesn't
+exist yet):
+
+```bash
+python create_api_key.py you@example.com
+```
+
+This prints the raw key once, it isn't stored anywhere retrievable, only
+its hash is. Try it:
+
+```bash
+curl -X POST http://localhost:8000/agent/query \
+  -H "X-API-Key: <the key from above>" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "hello"}'
+```
+
+A missing or wrong key gets a 401.
+
 ### Frontend
 
 ```bash
@@ -106,7 +126,12 @@ Create `frontend/.env.local`:
 
 ```
 NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_API_KEY=<the key from create_api_key.py>
 ```
+
+`NEXT_PUBLIC_*` values ship in the client bundle, so this key is visible
+to anyone who can load the page. That's an acceptable tradeoff for an
+internal tool on a trusted network, not for a publicly reachable one.
 
 Start it:
 

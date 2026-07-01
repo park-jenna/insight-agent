@@ -29,10 +29,12 @@ def _parse_row(row_data):
     return json.loads(row_data) if isinstance(row_data, str) else row_data
 
 
-async def _load_dataset_df(conn, dataset_name: str):
+async def _load_dataset_df(conn, dataset_name: str, user_id: str):
     ds = await conn.fetchrow(
-        "SELECT id FROM datasets WHERE name = $1 ORDER BY uploaded_at DESC LIMIT 1",
+        "SELECT id FROM datasets WHERE name = $1 AND user_id = $2 "
+        "ORDER BY uploaded_at DESC LIMIT 1",
         dataset_name,
+        user_id,
     )
     if ds is None:
         return None
@@ -45,8 +47,8 @@ async def _load_dataset_df(conn, dataset_name: str):
 
 # ---------- document tool ----------
 
-async def search_documents_tool(conn, query: str, top_k: int = 5) -> dict:
-    results = await hybrid_search(conn, query, top_k=top_k)
+async def search_documents_tool(conn, query: str, user_id: str, top_k: int = 5) -> dict:
+    results = await hybrid_search(conn, query, user_id, top_k=top_k)
     return {
         "results": [
             {
@@ -61,8 +63,8 @@ async def search_documents_tool(conn, query: str, top_k: int = 5) -> dict:
 
 # ---------- data tools ----------
 
-async def analyze_dataset_tool(conn, dataset_name: str, column: str = None) -> dict:
-    df = await _load_dataset_df(conn, dataset_name)
+async def analyze_dataset_tool(conn, dataset_name: str, user_id: str, column: str = None) -> dict:
+    df = await _load_dataset_df(conn, dataset_name, user_id)
     if df is None:
         return {"error": f"No dataset named '{dataset_name}'."}
 
@@ -93,9 +95,9 @@ async def analyze_dataset_tool(conn, dataset_name: str, column: str = None) -> d
     }
 
 
-async def detect_trends_tool(conn, dataset_name: str, date_column: str,
+async def detect_trends_tool(conn, dataset_name: str, user_id: str, date_column: str,
                              metric: str = None, freq: str = "M") -> dict:
-    df = await _load_dataset_df(conn, dataset_name)
+    df = await _load_dataset_df(conn, dataset_name, user_id)
     if df is None:
         return {"error": f"No dataset named '{dataset_name}'."}
     if date_column not in df.columns:
@@ -125,9 +127,9 @@ async def detect_trends_tool(conn, dataset_name: str, date_column: str,
     return {"date_column": date_column, "frequency": freq, "points": points}
 
 
-async def find_anomalies_tool(conn, dataset_name: str, column: str,
+async def find_anomalies_tool(conn, dataset_name: str, user_id: str, column: str,
                               threshold: float = 3.0) -> dict:
-    df = await _load_dataset_df(conn, dataset_name)
+    df = await _load_dataset_df(conn, dataset_name, user_id)
     if df is None:
         return {"error": f"No dataset named '{dataset_name}'."}
     if column not in df.columns:
@@ -152,9 +154,9 @@ async def find_anomalies_tool(conn, dataset_name: str, column: str,
     }
 
 
-async def calculate_ratios_tool(conn, dataset_name: str, column: str,
+async def calculate_ratios_tool(conn, dataset_name: str, user_id: str, column: str,
                                 value_a: str, value_b: str = None) -> dict:
-    df = await _load_dataset_df(conn, dataset_name)
+    df = await _load_dataset_df(conn, dataset_name, user_id)
     if df is None:
         return {"error": f"No dataset named '{dataset_name}'."}
     if column not in df.columns:
@@ -181,9 +183,9 @@ async def calculate_ratios_tool(conn, dataset_name: str, column: str,
     }
 
 
-async def compare_periods_tool(conn, dataset_name: str, date_column: str,
+async def compare_periods_tool(conn, dataset_name: str, user_id: str, date_column: str,
                                split_date: str, metric: str = None) -> dict:
-    df = await _load_dataset_df(conn, dataset_name)
+    df = await _load_dataset_df(conn, dataset_name, user_id)
     if df is None:
         return {"error": f"No dataset named '{dataset_name}'."}
     if date_column not in df.columns:
@@ -347,29 +349,31 @@ TOOL_SCHEMAS = [
 
 # ---------- dispatch ----------
 
-async def execute_tool(conn, name: str, args: dict) -> dict:
+async def execute_tool(conn, name: str, args: dict, user_id: str) -> dict:
     if name == "search_documents":
-        return await search_documents_tool(conn, args["query"], args.get("top_k", 5))
+        return await search_documents_tool(conn, args["query"], user_id, args.get("top_k", 5))
     if name == "analyze_dataset":
-        return await analyze_dataset_tool(conn, args["dataset_name"], args.get("column"))
+        return await analyze_dataset_tool(conn, args["dataset_name"], user_id, args.get("column"))
     if name == "detect_trends":
-        return await detect_trends_tool(conn, args["dataset_name"], args["date_column"],
+        return await detect_trends_tool(conn, args["dataset_name"], user_id, args["date_column"],
                                         args.get("metric"), args.get("freq", "M"))
     if name == "find_anomalies":
-        return await find_anomalies_tool(conn, args["dataset_name"], args["column"],
+        return await find_anomalies_tool(conn, args["dataset_name"], user_id, args["column"],
                                          args.get("threshold", 3.0))
     if name == "calculate_ratios":
-        return await calculate_ratios_tool(conn, args["dataset_name"], args["column"],
+        return await calculate_ratios_tool(conn, args["dataset_name"], user_id, args["column"],
                                            args["value_a"], args.get("value_b"))
     if name == "compare_periods":
-        return await compare_periods_tool(conn, args["dataset_name"], args["date_column"],
+        return await compare_periods_tool(conn, args["dataset_name"], user_id, args["date_column"],
                                           args["split_date"], args.get("metric"))
     return {"error": f"Unknown tool: {name}"}
 
 
-async def available_datasets(conn) -> list[dict]:
+async def available_datasets(conn, user_id: str) -> list[dict]:
     rows = await conn.fetch(
-        "SELECT name, column_schema, row_count FROM datasets ORDER BY uploaded_at"
+        "SELECT name, column_schema, row_count FROM datasets "
+        "WHERE user_id = $1 ORDER BY uploaded_at",
+        user_id,
     )
     out = []
     for r in rows:

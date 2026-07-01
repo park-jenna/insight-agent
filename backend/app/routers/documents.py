@@ -12,30 +12,20 @@ same rows by backfill_embeddings.py.
 import os
 import tempfile
 
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 
+from app.auth import CurrentUser, get_current_user
 from app.db import get_pool
 from app.pdf_processing import extract_pdf_text, chunk_text
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
-DEV_USER_EMAIL = "dev@insightagent.local"
-
-
-async def get_or_create_dev_user(conn) -> str:
-    row = await conn.fetchrow(
-        "SELECT id FROM users WHERE email = $1", DEV_USER_EMAIL
-    )
-    if row:
-        return row["id"]
-    row = await conn.fetchrow(
-        "INSERT INTO users (email) VALUES ($1) RETURNING id", DEV_USER_EMAIL
-    )
-    return row["id"]
-
 
 @router.post("/upload")
-async def upload_pdf(file: UploadFile = File(...)):
+async def upload_pdf(
+    file: UploadFile = File(...),
+    user: CurrentUser = Depends(get_current_user),
+):
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(400, "Only PDF files are supported here.")
 
@@ -71,14 +61,12 @@ async def upload_pdf(file: UploadFile = File(...)):
     pool = get_pool()
     async with pool.acquire() as conn:
         async with conn.transaction():
-            user_id = await get_or_create_dev_user(conn)
-
             # replace-on-reupload: if this filename was uploaded before,
             # remove the old document first so duplicates don't stack.
             # ON DELETE CASCADE clears its chunks too.
             await conn.execute(
                 "DELETE FROM documents WHERE user_id = $1 AND filename = $2",
-                user_id,
+                user.id,
                 file.filename,
             )
 
@@ -88,7 +76,7 @@ async def upload_pdf(file: UploadFile = File(...)):
                 VALUES ($1, $2, $3)
                 RETURNING id
                 """,
-                user_id,
+                user.id,
                 file.filename,
                 len(chunks),
             )
@@ -118,13 +106,18 @@ async def upload_pdf(file: UploadFile = File(...)):
 
 
 @router.get("/{document_id}/chunks")
-async def get_chunks(document_id: str, limit: int = 5):
+async def get_chunks(
+    document_id: str,
+    limit: int = 5,
+    user: CurrentUser = Depends(get_current_user),
+):
     """Peek at the first few stored chunks, for verification."""
     pool = get_pool()
     async with pool.acquire() as conn:
         doc = await conn.fetchrow(
-            "SELECT filename, total_chunks FROM documents WHERE id = $1",
+            "SELECT filename, total_chunks FROM documents WHERE id = $1 AND user_id = $2",
             document_id,
+            user.id,
         )
         if not doc:
             raise HTTPException(404, "Document not found")

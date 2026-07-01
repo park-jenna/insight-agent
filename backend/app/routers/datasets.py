@@ -4,8 +4,8 @@ Dataset ingestion routes (CSV).
 Accept a CSV upload, parse it with Pandas, infer column types so the
 platform stays domain agnostic, and store the metadata plus every row.
 
-No auth yet by design. Every upload attaches to a single dev user
-created on first use.
+Every route requires an API key (see app.auth); uploads and lookups are
+scoped to the calling user.
 """
 
 import io
@@ -13,13 +13,12 @@ import json
 from datetime import datetime, date
 
 import pandas as pd
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 
+from app.auth import CurrentUser, get_current_user
 from app.db import get_pool
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])
-
-DEV_USER_EMAIL = "dev@insightagent.local"
 
 # Swagger's "Try it out" pre-fills optional string fields with this, so
 # treat it as "no name given" rather than a real dataset name.
@@ -80,20 +79,12 @@ def json_safe(value):
     return value
 
 
-async def get_or_create_dev_user(conn) -> str:
-    row = await conn.fetchrow(
-        "SELECT id FROM users WHERE email = $1", DEV_USER_EMAIL
-    )
-    if row:
-        return row["id"]
-    row = await conn.fetchrow(
-        "INSERT INTO users (email) VALUES ($1) RETURNING id", DEV_USER_EMAIL
-    )
-    return row["id"]
-
-
 @router.post("/upload")
-async def upload_csv(file: UploadFile = File(...), name: str = Form(None)):
+async def upload_csv(
+    file: UploadFile = File(...),
+    name: str = Form(None),
+    user: CurrentUser = Depends(get_current_user),
+):
     if not file.filename.lower().endswith(".csv"):
         raise HTTPException(400, "Only CSV files are supported right now.")
 
@@ -112,14 +103,12 @@ async def upload_csv(file: UploadFile = File(...), name: str = Form(None)):
     pool = get_pool()
     async with pool.acquire() as conn:
         async with conn.transaction():
-            user_id = await get_or_create_dev_user(conn)
-
             # Replace on re-upload: drop any existing dataset with this
             # name so repeated uploads don't stack duplicates. Cascade
             # clears its rows.
             await conn.execute(
                 "DELETE FROM datasets WHERE user_id = $1 AND name = $2",
-                user_id,
+                user.id,
                 dataset_name,
             )
 
@@ -130,7 +119,7 @@ async def upload_csv(file: UploadFile = File(...), name: str = Form(None)):
                 VALUES ($1, $2, $3, $4::jsonb, $5)
                 RETURNING id
                 """,
-                user_id,
+                user.id,
                 dataset_name,
                 file.filename,
                 json.dumps(column_schema),
@@ -164,13 +153,14 @@ async def upload_csv(file: UploadFile = File(...), name: str = Form(None)):
 
 
 @router.get("/{dataset_id}")
-async def get_dataset(dataset_id: str):
+async def get_dataset(dataset_id: str, user: CurrentUser = Depends(get_current_user)):
     pool = get_pool()
     async with pool.acquire() as conn:
         dataset = await conn.fetchrow(
             "SELECT id, name, original_filename, column_schema, row_count, uploaded_at "
-            "FROM datasets WHERE id = $1",
+            "FROM datasets WHERE id = $1 AND user_id = $2",
             dataset_id,
+            user.id,
         )
         if not dataset:
             raise HTTPException(404, "Dataset not found")
