@@ -19,3 +19,20 @@ export function apiKeyHeader(): Record<string, string> {
   const key = process.env.NEXT_PUBLIC_API_KEY;
   return key ? { "X-API-Key": key } : {};
 }
+
+/** Pull a readable message out of a failed response: FastAPI's error
+ * bodies (HTTPExceptions, and the rate limiter's 429s) are all
+ * {"detail": "..."}, already worded for display, so that's read first.
+ * 401s get a dedicated hint since there's no body to parse for those. */
+export async function errorMessage(response: Response): Promise<string> {
+  if (response.status === 401) {
+    return "Authentication failed. Check that your API key is set correctly and the dev server was restarted after setting it.";
+  }
+  try {
+    const body = await response.json();
+    if (typeof body.detail === "string") return body.detail;
+  } catch {
+    // response wasn't JSON, fall through to the generic message
+  }
+  return `Request failed (server responded ${response.status}).`;
+}

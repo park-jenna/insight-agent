@@ -18,6 +18,9 @@ from fastapi import Header, HTTPException
 
 from app.db import get_pool
 
+# Shared with app.rate_limit, which keys buckets off the same header.
+API_KEY_HEADER = "X-API-Key"
+
 
 @dataclass
 class CurrentUser:
@@ -34,7 +37,7 @@ def generate_api_key() -> str:
 
 
 async def get_current_user(
-    x_api_key: str | None = Header(default=None, alias="X-API-Key"),
+    x_api_key: str | None = Header(default=None, alias=API_KEY_HEADER),
 ) -> CurrentUser:
     if not x_api_key:
         raise HTTPException(401, "Missing X-API-Key header.")

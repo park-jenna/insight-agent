@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState } from "react";
-import { apiBase, apiKeyHeader } from "@/lib/api";
+import { apiBase, apiKeyHeader, errorMessage } from "@/lib/api";
 import type {
   AgentMessage,
   AgentRun,
@@ -21,6 +21,13 @@ type StreamEvent =
 function messageId(role: AgentMessage["role"]) {
   return `${role}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
+
+/** Distinguishes "you're being throttled" from a real connection failure,
+ * so the UI can show the backend's own message instead of "assistant is
+ * unreachable". The rate limiter's 429 detail is already worded for
+ * display (e.g. "Rate limit exceeded (10 per 1 minute). Try again in
+ * 60 seconds."), so this just carries it through. */
+class RateLimitError extends Error {}
 
 export function useAgentStream() {
   const [messages, setMessages] = useState<AgentMessage[]>([]);
@@ -146,6 +153,9 @@ export function useAgentStream() {
         });
 
         if (!response.ok || !response.body) {
+          if (response.status === 429) {
+            throw new RateLimitError(await errorMessage(response));
+          }
           throw new Error(`server responded ${response.status}`);
         }
 
@@ -189,7 +199,10 @@ export function useAgentStream() {
         patchLast((current) => ({
           ...current,
           streaming: false,
-          content: `The assistant is unreachable (${message}). Confirm the backend is running at ${API}.`,
+          content:
+            caught instanceof RateLimitError
+              ? message
+              : `The assistant is unreachable (${message}). Confirm the backend is running at ${API}.`,
         }));
       } finally {
         setLoading(false);

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { apiBase, apiKeyHeader } from "@/lib/api";
+import { apiBase, apiKeyHeader, errorMessage } from "@/lib/api";
 
 const API = apiBase();
 
@@ -26,22 +26,6 @@ type UploadStatus =
   | { state: "uploading" }
   | { state: "success"; message: string }
   | { state: "error"; message: string };
-
-/** Pull a readable message out of a failed response: FastAPI's
- * HTTPException bodies are {"detail": "..."}, auth failures get a
- * dedicated message since there's no body to parse for those. */
-async function errorMessage(response: Response): Promise<string> {
-  if (response.status === 401) {
-    return "Authentication failed. Check that NEXT_PUBLIC_API_KEY is set and the dev server was restarted after setting it.";
-  }
-  try {
-    const body = await response.json();
-    if (typeof body.detail === "string") return body.detail;
-  } catch {
-    // response wasn't JSON, fall through to the generic message
-  }
-  return `Upload failed (server responded ${response.status}).`;
-}
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleString([], {

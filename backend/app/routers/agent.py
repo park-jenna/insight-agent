@@ -11,17 +11,24 @@ GET /agent/sessions/{session_id} returns the stored turns for a session.
 
 All routes require an X-API-Key header (see app.auth). Sessions belong
 to the user who created them; passing another user's session_id 404s.
+
+/query and /stream call OpenAI, so both are rate limited per API key
+(see app.rate_limit). The decorator needs a `request` parameter to find
+the caller's key; it runs the check before the endpoint body, so a
+limited /stream call gets a plain 429 rather than a half-started SSE
+stream.
 """
 
 import json
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from app.auth import CurrentUser, get_current_user
 from app.db import get_pool
 from app.agent import run_agent, run_agent_stream, SessionNotFound
+from app.rate_limit import OPENAI_RATE_LIMIT, limiter
 
 router = APIRouter(prefix="/agent", tags=["agent"])
 
@@ -36,7 +43,10 @@ def _sse(event: str, data: dict) -> str:
 
 
 @router.post("/query")
-async def agent_query(req: AgentQuery, user: CurrentUser = Depends(get_current_user)):
+@limiter.limit(OPENAI_RATE_LIMIT)
+async def agent_query(
+    request: Request, req: AgentQuery, user: CurrentUser = Depends(get_current_user)
+):
     pool = get_pool()
     async with pool.acquire() as conn:
         try:
@@ -46,7 +56,10 @@ async def agent_query(req: AgentQuery, user: CurrentUser = Depends(get_current_u
 
 
 @router.post("/stream")
-async def agent_stream(req: AgentQuery, user: CurrentUser = Depends(get_current_user)):
+@limiter.limit(OPENAI_RATE_LIMIT)
+async def agent_stream(
+    request: Request, req: AgentQuery, user: CurrentUser = Depends(get_current_user)
+):
     pool = get_pool()
 
     async def gen():

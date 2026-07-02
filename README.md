@@ -115,6 +115,23 @@ curl -X POST http://localhost:8000/agent/query \
 
 A missing or wrong key gets a 401.
 
+`/agent/query` and `/agent/stream` are rate limited to 10 requests per
+minute per API key, since both call OpenAI. To see it trip locally:
+
+```bash
+for i in $(seq 1 11); do
+  curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:8000/agent/query \
+    -H "X-API-Key: <your key>" \
+    -H "Content-Type: application/json" \
+    -d '{"query": "hello"}'
+done
+```
+
+The first 10 print `200`, the 11th prints `429` with a JSON body like
+`{"detail": "...", "retry_after_seconds": 60}` (the window length, not the
+precise time left in it). The limit is keyed per API key, not IP, so a
+different key gets its own fresh budget.
+
 ### Frontend
 
 ```bash
