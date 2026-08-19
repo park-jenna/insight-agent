@@ -185,18 +185,19 @@ export function EvidenceRail({ run, loading, open, onClose }: Props) {
                     <span>{source.type.toUpperCase()}</span>
                     <div>
                       <b>{source.filename}</b>
-                      <small>
-                        {source.passages} passage
-                        {source.passages === 1 ? "" : "s"} retrieved
-                      </small>
+                      {source.type !== "dataset" ? (
+                        <small>
+                          {source.passages} passage
+                          {source.passages === 1 ? "" : "s"} retrieved
+                        </small>
+                      ) : null}
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
               <p className={styles.directAnswer}>
-                No documents used. This answer came from program data or
-                conversation context.
+                No documents or datasets were queried for this answer.
               </p>
             )}
           </div>

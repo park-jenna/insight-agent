@@ -119,19 +119,33 @@ def _trim_for_client(tool: str, result: dict):
     return result
 
 
+DATASET_TOOLS = {
+    "analyze_dataset", "detect_trends", "find_anomalies",
+    "calculate_ratios", "compare_periods",
+}
+
+
 def _collect_sources(tool_trace: list) -> list:
-    counts: dict[str, int] = {}
+    doc_counts: dict[str, int] = {}
+    dataset_counts: dict[str, int] = {}
     for step in tool_trace:
-        if step["tool"] != "search_documents":
-            continue
-        for r in (step.get("result") or {}).get("results", []):
-            fn = r.get("source")
-            if fn:
-                counts[fn] = counts.get(fn, 0) + 1
+        tool = step["tool"]
+        if tool == "search_documents":
+            for r in (step.get("result") or {}).get("results", []):
+                fn = r.get("source")
+                if fn:
+                    doc_counts[fn] = doc_counts.get(fn, 0) + 1
+        elif tool in DATASET_TOOLS:
+            name = (step.get("args") or {}).get("dataset_name")
+            if name:
+                dataset_counts[name] = dataset_counts.get(name, 0) + 1
+
     sources = []
-    for fn, n in counts.items():
+    for fn, n in doc_counts.items():
         ext = fn.rsplit(".", 1)[-1].lower() if "." in fn else "file"
         sources.append({"filename": fn, "type": ext, "passages": n})
+    for name, n in dataset_counts.items():
+        sources.append({"filename": name, "type": "dataset", "passages": n})
     return sources
 
 
