@@ -30,21 +30,23 @@ RRF_K = 60
 
 HYBRID_SQL = """
 WITH vector_search AS (
-    SELECT id,
-           row_number() OVER (ORDER BY embedding <=> $1::vector) AS rank
-    FROM document_chunks
-    WHERE embedding IS NOT NULL
-    ORDER BY embedding <=> $1::vector
+    SELECT c.id,
+           row_number() OVER (ORDER BY c.embedding <=> $1::vector) AS rank
+    FROM document_chunks c
+    JOIN documents d ON d.id = c.document_id
+    WHERE c.embedding IS NOT NULL AND d.user_id = $6
+    ORDER BY c.embedding <=> $1::vector
     LIMIT $2
 ),
 keyword_search AS (
-    SELECT id,
+    SELECT c.id,
            row_number() OVER (
-               ORDER BY ts_rank(content_tsv, plainto_tsquery('english', $3)) DESC
+               ORDER BY ts_rank(c.content_tsv, plainto_tsquery('english', $3)) DESC
            ) AS rank
-    FROM document_chunks
-    WHERE content_tsv @@ plainto_tsquery('english', $3)
-    ORDER BY ts_rank(content_tsv, plainto_tsquery('english', $3)) DESC
+    FROM document_chunks c
+    JOIN documents d ON d.id = c.document_id
+    WHERE c.content_tsv @@ plainto_tsquery('english', $3) AND d.user_id = $6
+    ORDER BY ts_rank(c.content_tsv, plainto_tsquery('english', $3)) DESC
     LIMIT $2
 )
 SELECT
@@ -69,8 +71,12 @@ def to_vector_literal(vec: list[float]) -> str:
     return "[" + ",".join(str(x) for x in vec) + "]"
 
 
-async def hybrid_search(conn, query: str, top_k: int = 5) -> list[dict]:
+async def hybrid_search(conn, query: str, user_id: str, top_k: int = 5) -> list[dict]:
     """Embed the query, run vector + keyword search, fuse with RRF.
+
+    Scoped to user_id's own documents, both CTEs join documents and
+    filter on it, so a chunk from someone else's upload can't surface
+    in either list.
 
     Returns the top_k chunks, each with the rank it earned in each list
     (None if it didn't appear there) and its fused score, which shows why
@@ -86,6 +92,7 @@ async def hybrid_search(conn, query: str, top_k: int = 5) -> list[dict]:
         query,      # $3 query text
         RRF_K,      # $4 RRF constant
         top_k,      # $5 final limit
+        user_id,    # $6 owner filter
     )
 
     results = []

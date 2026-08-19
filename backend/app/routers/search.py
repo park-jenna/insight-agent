@@ -4,12 +4,21 @@ Search routes.
 POST /search runs hybrid retrieval and returns the matching chunks.
 No LLM answer generation yet, this step is about confirming retrieval
 quality on its own before building generation on top of it.
+
+Requires an API key; results are scoped to the caller's own documents,
+same as the agent's search_documents tool.
+
+hybrid_search calls OpenAI to embed the query, so this route carries
+the same per-key rate limit as /agent/query and /agent/stream (see
+app.rate_limit).
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
+from app.auth import CurrentUser, get_current_user
 from app.db import get_pool
+from app.rate_limit import OPENAI_RATE_LIMIT, limiter
 from app.search import hybrid_search
 
 router = APIRouter(prefix="/search", tags=["search"])
@@ -21,10 +30,13 @@ class SearchRequest(BaseModel):
 
 
 @router.post("")
-async def search(req: SearchRequest):
+@limiter.limit(OPENAI_RATE_LIMIT)
+async def search(
+    request: Request, req: SearchRequest, user: CurrentUser = Depends(get_current_user)
+):
     pool = get_pool()
     async with pool.acquire() as conn:
-        results = await hybrid_search(conn, req.query, top_k=req.limit)
+        results = await hybrid_search(conn, req.query, user.id, top_k=req.limit)
 
     # truncate content in the response so the list stays readable;
     # the full chunk is still available by chunk_id if needed later

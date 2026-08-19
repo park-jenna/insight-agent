@@ -4,14 +4,21 @@
 
 -- ============================================================
 -- users
--- Kept intentionally simple. No auth complexity here per the
--- project brief, this just identifies who uploaded what.
+-- Identifies who uploaded what and who is asking. Auth is API-key
+-- based: api_key_hash stores a sha256 hash, never the raw key, so a
+-- database leak alone doesn't hand out working credentials. Keys are
+-- issued with create_api_key.py.
 -- ============================================================
 CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Added after the initial launch, so it's an ALTER rather than part of
+-- the CREATE TABLE above. Re-running apply_schema.py against an
+-- existing database picks it up without a drop/recreate.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS api_key_hash TEXT UNIQUE;
 
 -- ============================================================
 -- datasets

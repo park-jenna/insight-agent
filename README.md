@@ -95,6 +95,43 @@ python apply_schema.py
 uvicorn app.main:app --reload
 ```
 
+Every route except `/health` requires an API key, sent as an `X-API-Key`
+header. Issue one for yourself (creates the user if the email doesn't
+exist yet):
+
+```bash
+python create_api_key.py you@example.com
+```
+
+This prints the raw key once, it isn't stored anywhere retrievable, only
+its hash is. Try it:
+
+```bash
+curl -X POST http://localhost:8000/agent/query \
+  -H "X-API-Key: <the key from above>" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "hello"}'
+```
+
+A missing or wrong key gets a 401.
+
+`/agent/query` and `/agent/stream` are rate limited to 10 requests per
+minute per API key, since both call OpenAI. To see it trip locally:
+
+```bash
+for i in $(seq 1 11); do
+  curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:8000/agent/query \
+    -H "X-API-Key: <your key>" \
+    -H "Content-Type: application/json" \
+    -d '{"query": "hello"}'
+done
+```
+
+The first 10 print `200`, the 11th prints `429` with a JSON body like
+`{"detail": "...", "retry_after_seconds": 60}` (the window length, not the
+precise time left in it). The limit is keyed per API key, not IP, so a
+different key gets its own fresh budget.
+
 ### Frontend
 
 ```bash
@@ -106,7 +143,12 @@ Create `frontend/.env.local`:
 
 ```
 NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_API_KEY=<the key from create_api_key.py>
 ```
+
+`NEXT_PUBLIC_*` values ship in the client bundle, so this key is visible
+to anyone who can load the page. That's an acceptable tradeoff for an
+internal tool on a trusted network, not for a publicly reachable one.
 
 Start it:
 

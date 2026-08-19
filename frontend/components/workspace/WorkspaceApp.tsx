@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import {
   DEFAULT_FILTERS,
   WORKSPACE_METRICS,
@@ -42,25 +43,20 @@ export function WorkspaceApp() {
   return (
     <main className={styles.app}>
       <header className={styles.topbar}>
-        <div className={styles.brand}>
+        <Link className={styles.brand} href="/" aria-label="Go to InsightAgent home">
           <div className={styles.logo}>iA</div>
-          <div className={styles.brandText}>
-            <strong>InsightAgent</strong>
-            <span>ChiEAC staff workspace</span>
-          </div>
+          <span className={styles.wordmark}>InsightAgent</span>
+        </Link>
+        <div className={styles.brandMeta}>
+          <span className={styles.divider} />
+          <span className={styles.workspaceLabel}>Workspace</span>
         </div>
+        <span className={styles.spacer} />
         <div className={styles.workspaceStatus}>
           <span className={styles.statusItem}>
             <span className={styles.statusDot} />
             Synced today
           </span>
-          <span className={styles.statusItem}>
-            {WORKSPACE_METRICS.indexedPassages.toLocaleString()} indexed passages
-          </span>
-          <span className={styles.statusItem}>
-            {WORKSPACE_METRICS.enrollmentRecords.toLocaleString()} enrollment records
-          </span>
-          <span className={styles.statusItem}>Policy + data mode</span>
         </div>
       </header>
 

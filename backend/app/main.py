@@ -8,11 +8,27 @@ import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
 from app.db import init_pool, close_pool
+from app.rate_limit import limiter, rate_limit_exceeded_handler
 from app.routers import datasets, documents, search, agent, evaluation
 
 app = FastAPI(title="InsightAgent API")
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+
+# Registered before CORSMiddleware on purpose: Starlette's add_middleware
+# inserts at the front of the stack, so whichever is added LAST ends up
+# OUTERMOST. Adding this first means CORS wraps it, so a 429 that
+# SlowAPIMiddleware itself generates (e.g. from a future default_limits,
+# not the per-route @limiter.limit decorators, which run inside the
+# route handler and are unaffected by middleware order) still gets CORS
+# headers on the way out, instead of the browser seeing an opaque
+# cross-origin failure.
+app.add_middleware(SlowAPIMiddleware)
 
 # Local dev always allowed. Deployed frontend origins come from FRONTEND_ORIGINS,
 # a comma separated list set in the hosting environment.
